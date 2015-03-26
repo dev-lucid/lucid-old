@@ -1,3 +1,26 @@
 #!/bin/sh
+dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+name=$1
+app="$dir/../../../../apps/$name"
+template=$dir/../template
 
 echo "Making directories"
+mkdir $app;
+mkdir $app/bin;
+mkdir $app/db;
+mkdir $app/db/patches;
+mkdir $app/db/models;
+mkdir $app/etc;
+mkdir $app/lib;
+mkdir $app/www;
+mkdir $app/www/controllers;
+mkdir $app/www/media;
+mkdir $app/www/media/fonts;
+mkdir $app/www/media/images;
+mkdir $app/www/media/js;
+mkdir $app/www/media/less;
+
+cp $template/etc/dependencies.json $app/etc/
+cp $template/etc/environment.ini $app/etc/
+cp $template/www/index.html $app/www/
+
