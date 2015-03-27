@@ -23,10 +23,12 @@ mkdir $app/www/media/js;
 mkdir $app/www/media/less;
 
 cp $template/etc/dependencies.php $app/etc/
+cp $template/etc/db.php $app/etc/
 cp $template/etc/js.php $app/etc/
 cp $template/etc/less.php $app/etc/
-cp $template/etc/environment.ini $app/etc/
+cp $template/etc/environment.php $app/etc/
 cp $template/www/index.html $app/www/
+cp $template/www/app.php $app/www/
 cp $template/www/media/js/compile.php $app/www/media/js/
 cp $template/www/media/js/customizations.js $app/www/media/js/
 cp $template/www/media/less/compile.php $app/www/media/less/

@@ -1,0 +1,3 @@
+<?php
+$lucid->config['db'] = [];
+?>
