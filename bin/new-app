@@ -16,6 +16,8 @@ mkdir $app/var;
 mkdir $app/var/cache;
 mkdir $app/www;
 mkdir $app/www/controllers;
+mkdir $app/www/controllers/content;
+mkdir $app/www/controllers/content/views;
 mkdir $app/www/media;
 mkdir $app/www/media/fonts;
 mkdir $app/www/media/images;
@@ -33,6 +35,9 @@ cp $template/www/media/js/compile.php $app/www/media/js/
 cp $template/www/media/js/customizations.js $app/www/media/js/
 cp $template/www/media/less/compile.php $app/www/media/less/
 cp $template/www/media/less/customizations.less $app/www/media/less/
+cp $template/www/controllers/content/views/index.php $app/www/controllers/content/views/
+cp $template/www/controllers/content/views/about.php $app/www/controllers/content/views/
+cp $template/www/controllers/content/views/contact.php $app/www/controllers/content/views/
 
 wget https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js -O $app/www/media/js/jquery.js
 

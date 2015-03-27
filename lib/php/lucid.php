@@ -36,6 +36,7 @@ class lucid
             'replace'=>'',
             'special'=>[],
             'javascript'=>'',
+            'success'=>true,
         ]; 
     }
 
