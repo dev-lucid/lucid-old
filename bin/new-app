@@ -12,6 +12,8 @@ mkdir $app/db/patches;
 mkdir $app/db/models;
 mkdir $app/etc;
 mkdir $app/lib;
+mkdir $app/var;
+mkdir $app/var/cache;
 mkdir $app/www;
 mkdir $app/www/controllers;
 mkdir $app/www/media;
@@ -20,7 +22,15 @@ mkdir $app/www/media/images;
 mkdir $app/www/media/js;
 mkdir $app/www/media/less;
 
-cp $template/etc/dependencies.json $app/etc/
+cp $template/etc/dependencies.php $app/etc/
+cp $template/etc/js.php $app/etc/
+cp $template/etc/less.php $app/etc/
 cp $template/etc/environment.ini $app/etc/
 cp $template/www/index.html $app/www/
+cp $template/www/media/js/compile.php $app/www/media/js/
+cp $template/www/media/js/customizations.js $app/www/media/js/
+cp $template/www/media/less/compile.php $app/www/media/less/
+cp $template/www/media/less/customizations.less $app/www/media/less/
+
+wget https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js -O $app/www/media/js/jquery.js
 
