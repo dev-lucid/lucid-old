@@ -13,10 +13,14 @@ $dependencies = [
         "branch"   =>"1.0-bootstrap",
         "revision" =>null
     ],
-    "lib/propel"=>[
-        "url"       =>"git@github.com:propelorm/Propel.git",
-        "local-url" =>["file:///opt/git-clones/propel/"],
-        "branch"    =>"master",
+    "lib/idiorm"=>[
+        "url"       =>"git@github.com:j4mie/idiorm.git",
+        "branch"    =>"v1.5.1",
+        "revision"  =>null
+    ],
+    "lib/paris"=>[
+        "url"       =>"git@github.com:j4mie/paris.git",
+        "branch"    =>"v1.5.4",
         "revision"  =>null
     ],
     "lib/less.php"=>[

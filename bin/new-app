@@ -24,11 +24,16 @@ mkdir $app/www/media/images;
 mkdir $app/www/media/js;
 mkdir $app/www/media/less;
 
+echo "Copying files"
 cp $template/etc/dependencies.php $app/etc/
 cp $template/etc/db.php $app/etc/
 cp $template/etc/js.php $app/etc/
 cp $template/etc/less.php $app/etc/
 cp $template/etc/environment.php $app/etc/
+cp $template/etc/autoload.php $app/etc/
+cp $template/db/models/users.php $app/db/models/
+cp $template/db/models/organizations.php $app/db/models/
+cp $template/db/build.sql $app/db/
 cp $template/www/index.html $app/www/
 cp $template/www/app.php $app/www/
 cp $template/www/media/js/compile.php $app/www/media/js/
@@ -39,5 +44,12 @@ cp $template/www/controllers/content/views/index.php $app/www/controllers/conten
 cp $template/www/controllers/content/views/about.php $app/www/controllers/content/views/
 cp $template/www/controllers/content/views/contact.php $app/www/controllers/content/views/
 
-wget https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js -O $app/www/media/js/jquery.js
+echo "Retrieving recommended jquery version (1.11.1)"
+wget -q https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js -O $app/www/media/js/jquery.js
 
+echo "Building basic database"
+cd $app/db/;
+sqlite3 development.sqlite ".read build.sql"
+
+echo "-----------------------"
+echo "App complete. to run this app, bin/launch $1;"
