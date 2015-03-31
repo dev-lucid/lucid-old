@@ -32,3 +32,9 @@ insert into users (org_id,email,password,first_name,last_name) values (2,'user11
 insert into users (org_id,email,password,first_name,last_name) values (2,'user12@localhost','$2y$10$wHDMMT8IfEa9lEMzd2kQAuZvA2BwKNKPtwSE7ZNpQOBlO9Zlz0ORi','User','12');
 insert into users (org_id,email,password,first_name,last_name) values (2,'user13@localhost','$2y$10$wHDMMT8IfEa9lEMzd2kQAuZvA2BwKNKPtwSE7ZNpQOBlO9Zlz0ORi','User','13');
 insert into users (org_id,email,password,first_name,last_name) values (2,'user14@localhost','$2y$10$wHDMMT8IfEa9lEMzd2kQAuZvA2BwKNKPtwSE7ZNpQOBlO9Zlz0ORi','User','14');
+
+create table patches (
+    patch_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    identifier varchar(255),
+    applied_on_date TIMESTAMP default CURRENT_TIMESTAMP
+);
