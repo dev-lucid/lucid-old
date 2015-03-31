@@ -8,6 +8,8 @@ class lucid
     {
         # load all secondary libraries
         include(__DIR__.'/lucid_controller.php');
+        include(__DIR__.'/lucid_ruleset.php');
+        include(__DIR__.'/lucid_rule.php');
 
         $this->actions = [
             'pre-request'=>[],

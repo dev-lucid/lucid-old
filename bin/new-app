@@ -1,8 +1,11 @@
 #!/bin/sh
 dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 name=$1
+cmd=$2
 app="$dir/../../../../apps/$name"
 template=$dir/../template
+
+echo "cmd is $cmd"
 
 echo "Making directories"
 mkdir $app;
@@ -31,26 +34,26 @@ cp $template/etc/js.php $app/etc/
 cp $template/etc/less.php $app/etc/
 cp $template/etc/environment.php $app/etc/
 cp $template/etc/autoload.php $app/etc/
-cp $template/db/models/users.php $app/db/models/
-cp $template/db/models/organizations.php $app/db/models/
-cp $template/db/models/patches.php $app/db/models/
-cp $template/db/build.sql $app/db/
-cp $template/www/index.html $app/www/
-cp $template/www/app.php $app/www/
+$cmd $template/db/models/users.php $app/db/models/
+$cmd $template/db/models/organizations.php $app/db/models/
+$cmd $template/db/models/patches.php $app/db/models/
+$cmd $template/db/build.sqlite.sql $app/db/
+$cmd $template/www/index.html $app/www/
+$cmd $template/www/app.php $app/www/
 cp $template/www/media/js/compile.php $app/www/media/js/
 cp $template/www/media/js/customizations.js $app/www/media/js/
 cp $template/www/media/less/compile.php $app/www/media/less/
 cp $template/www/media/less/customizations.less $app/www/media/less/
-cp $template/www/controllers/content/views/index.php $app/www/controllers/content/views/
-cp $template/www/controllers/content/views/about.php $app/www/controllers/content/views/
-cp $template/www/controllers/content/views/contact.php $app/www/controllers/content/views/
+$cmd $template/www/controllers/content/views/index.php $app/www/controllers/content/views/
+$cmd $template/www/controllers/content/views/about.php $app/www/controllers/content/views/
+$cmd $template/www/controllers/content/views/contact.php $app/www/controllers/content/views/
 
 echo "Retrieving recommended jquery version (1.11.1)"
 wget -q https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js -O $app/www/media/js/jquery.js
 
 echo "Building basic database"
 cd $app/db/;
-sqlite3 development.sqlite ".read build.sql"
+sqlite3 development.sqlite ".read build.sqlite.sql"
 
 echo "-----------------------"
 echo "App complete. to run this app, bin/launch $1;"

@@ -42,10 +42,26 @@ function get_columns($table_name)
     }
 }
 
+function get_tables()
+{
+    $db_type = ORM::get_db()->getAttribute(PDO::ATTR_DRIVER_NAME);
+
+    if ($db_type == 'sqlite')
+    {
+        ORM::raw_execute('SELECT name FROM sqlite_master WHERE type = \'table\';');
+        $tables = ORM::get_last_statement()->fetchAll();
+    }
+    else
+    {
+        ORM::raw_execute('select table_name as name from information_schema.tables where table_type = \'BASE TABLE\';');
+        $tables = ORM::get_last_statement()->fetchAll();
+
+    }
+    return $tables;
+}
 
 
-ORM::raw_execute('SELECT name FROM sqlite_master WHERE type = \'table\';');
-$tables = ORM::get_last_statement()->fetchAll();
+$tables = get_tables();
 foreach($tables as $table)
 {
     # this name is reserved by sqlite

@@ -1,5 +1,5 @@
 <?php
-class lucid_model_users extends Model
+class lucid_model_users extends lucid_model
 {
     public static $_table = 'users';
 	public static $_id_column = 'user_id';

@@ -17,6 +17,9 @@ $files = array(
     __DIR__.'/../../../lib/bootstrap/'.$dependencies['lib/bootstrap']['branch'].'/js/tab.js',
     __DIR__.'/../../../lib/bootstrap/'.$dependencies['lib/bootstrap']['branch'].'/js/transition.js',
     __DIR__.'/../../../lib/lucid/'.$dependencies['lib/lucid']['branch'].'/lib/js/lucid.js', 
+    __DIR__.'/../../../lib/lucid/'.$dependencies['lib/lucid']['branch'].'/lib/js/lucid.form.js', 
+    __DIR__.'/../../../lib/lucid/'.$dependencies['lib/lucid']['branch'].'/lib/js/lucid.ruleset.js', 
+    __DIR__.'/../../../lib/lucid/'.$dependencies['lib/lucid']['branch'].'/lib/js/lucid.rule.js', 
     __DIR__.'/../www/media/js/customizations.js',
 );
 ?>
