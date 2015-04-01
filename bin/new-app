@@ -38,7 +38,11 @@ cp $template/etc/autoload.php $app/etc/
 $cmd $template/db/models/users.php $app/db/models/
 $cmd $template/db/models/organizations.php $app/db/models/
 $cmd $template/db/models/patches.php $app/db/models/
+$cmd $template/db/models/vw_users_details.php $app/db/models/
+$cmd $template/db/models/vw_organizations_details.php $app/db/models/
 $cmd $template/db/build.sqlite.sql $app/db/
+$cmd $template/db/views/vw_users_details.sql $app/db/views/
+$cmd $template/db/views/vw_organizations_details.sql $app/db/views/
 $cmd $template/www/index.html $app/www/
 $cmd $template/www/app.php $app/www/
 cp $template/www/media/js/compile.php $app/www/media/js/
@@ -48,6 +52,8 @@ cp $template/www/media/less/customizations.less $app/www/media/less/
 $cmd $template/www/controllers/content/views/index.php $app/www/controllers/content/views/
 $cmd $template/www/controllers/content/views/about.php $app/www/controllers/content/views/
 $cmd $template/www/controllers/content/views/contact.php $app/www/controllers/content/views/
+$cmd $template/www/controllers/content/views/login.php $app/www/controllers/content/views/
+$cmd $template/www/controllers/content/views/sign_up.php $app/www/controllers/content/views/
 
 echo "Retrieving recommended jquery version (1.11.1)"
 wget -q https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js -O $app/www/media/js/jquery.js
