@@ -13,6 +13,7 @@ mkdir $app/bin;
 mkdir $app/db;
 mkdir $app/db/patches;
 mkdir $app/db/models;
+mkdir $app/db/views;
 mkdir $app/etc;
 mkdir $app/lib;
 mkdir $app/var;

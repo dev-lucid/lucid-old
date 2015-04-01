@@ -14,16 +14,14 @@ function get_columns($table_name)
 
     if ($db_type == 'sqlite')
     {
-        $stmt = ORM::get_db()->prepare("SELECT sql FROM sqlite_master WHERE tbl_name = '".$table_name."'") ;
+        $stmt = ORM::get_db()->prepare("PRAGMA table_info('".$table_name."');") ;
         $stmt->execute() ;
-        $row = $stmt->fetch() ;
+        $columns = $stmt->fetchAll();
 
-        $sql = $row[0] ;
         $colnames = array();
-        $r = preg_match("/\(\s*(\S+)[^,)]*/", $sql, $m, PREG_OFFSET_CAPTURE) ;
-        while ($r) {
-            array_push( $colnames, $m[1][0] ) ;
-            $r = preg_match("/,\s*(\S+)[^,)]*/", $sql, $m, PREG_OFFSET_CAPTURE, $m[0][1] + strlen($m[0][0]) ) ;
+        foreach($columns as $column)
+        {
+            $colnames[] = $column['name'];
         }
         return $colnames;
     }
@@ -48,7 +46,7 @@ function get_tables()
 
     if ($db_type == 'sqlite')
     {
-        ORM::raw_execute('SELECT name FROM sqlite_master WHERE type = \'table\';');
+        ORM::raw_execute('SELECT name FROM sqlite_master WHERE type in  (\'table\',\'view\');');
         $tables = ORM::get_last_statement()->fetchAll();
     }
     else
@@ -77,6 +75,8 @@ foreach($tables as $table)
             # try to get column information
             $columns = get_columns($table['name']);
             $id_column = $columns[0];
+            $id_column = explode('.',$id_column);
+            $id_column = array_pop($id_column);
 
             echo("\t".$model_path.$table['name'].".php did not exist, generating\n");
             $model_text  = "<"."?php\nclass lucid_model_".$table['name']." extends Model\n{\n";
