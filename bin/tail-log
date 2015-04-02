@@ -1,0 +1,5 @@
+#!/bin/sh
+dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+app="$dir/../"
+
+tail -f $app/var/debug.log | cut -c 70-10000

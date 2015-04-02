@@ -29,6 +29,8 @@ mkdir $app/www/media/js;
 mkdir $app/www/media/less;
 
 echo "Copying files"
+cp $template/bin/tail-log $app/bin/
+
 cp $template/etc/dependencies.php $app/etc/
 cp $template/etc/db.php $app/etc/
 cp $template/etc/js.php $app/etc/
@@ -37,6 +39,7 @@ cp $template/etc/environment.php $app/etc/
 cp $template/etc/autoload.php $app/etc/
 cp $template/etc/session.php $app/etc/
 cp $template/etc/logger.php $app/etc/
+
 $cmd $template/db/models/users.php $app/db/models/
 $cmd $template/db/models/organizations.php $app/db/models/
 $cmd $template/db/models/patches.php $app/db/models/
@@ -45,6 +48,7 @@ $cmd $template/db/models/vw_organizations_details.php $app/db/models/
 $cmd $template/db/build.sqlite.sql $app/db/
 $cmd $template/db/views/vw_users_details.sql $app/db/views/
 $cmd $template/db/views/vw_organizations_details.sql $app/db/views/
+
 $cmd $template/www/index.html $app/www/
 $cmd $template/www/app.php $app/www/
 cp $template/www/media/js/compile.php $app/www/media/js/
