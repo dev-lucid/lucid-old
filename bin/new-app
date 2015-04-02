@@ -35,6 +35,7 @@ cp $template/etc/js.php $app/etc/
 cp $template/etc/less.php $app/etc/
 cp $template/etc/environment.php $app/etc/
 cp $template/etc/autoload.php $app/etc/
+cp $template/etc/session.php $app/etc/
 $cmd $template/db/models/users.php $app/db/models/
 $cmd $template/db/models/organizations.php $app/db/models/
 $cmd $template/db/models/patches.php $app/db/models/

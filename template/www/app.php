@@ -4,7 +4,12 @@ include(__DIR__.'/../../../lib/lucid/'.$dependencies['lib/lucid']['branch'].'/li
 include(__DIR__.'/../etc/db.php');
 include(__DIR__.'/../etc/autoload.php');
 
+
 lucid::init(__DIR__);
+
+# the session lib must be included *after* lucid is inited, as it sets the property $lucid->session
+include(__DIR__.'/../etc/session.php'); 
+
 try
 {
     lucid::process_request();
