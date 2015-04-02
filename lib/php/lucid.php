@@ -56,6 +56,7 @@ class lucid
         $lucid->config['paths']['app'] = $www_dir.'../';
         lucid::clear_response();
         ob_start();
+        lucid::process_action_list($lucid->actions['pre-request']);
     }
 
     public static function get_buffer()
@@ -128,6 +129,7 @@ class lucid
     public static function deinit()
     {
         global $lucid;
+        lucid::process_action_list($lucid->actions['post-request']);
         ob_get_clean();
         header('Content-Type: application/json');
         echo json_encode($lucid->response);
@@ -150,9 +152,8 @@ class lucid
         }
 
         $lucid->actions['request'][] = [$req_action[0],$req_action[1],$_REQUEST];
-        lucid::process_action_list($lucid->actions['pre-request']);
+        
         lucid::process_action_list($lucid->actions['request']);
-        lucid::process_action_list($lucid->actions['post-request']);
     }
 
     public static function process_action_list($action_list)
@@ -210,6 +211,21 @@ class lucid
         # call the appropriate method of the controller
         return $controller->$method($parameters);
     }
-}
+
+    public static function log($string,$type='debug')
+    {
+        global $lucid;
+        if (isset($lucid->logger))
+        {
+            $lucid->logger->write($string,$type);
+        }
+        else
+        {
+            error_log($type.': '.$string);
+        }
+    }
+
+}   
+
 
 ?>
