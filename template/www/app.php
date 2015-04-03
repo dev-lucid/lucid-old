@@ -13,7 +13,7 @@ include(__DIR__.'/../etc/session.php');
 include(__DIR__.'/../etc/logger.php'); 
 
 lucid::log('----------------------------------------------');
-lucid::log('request start');
+lucid::log('request start: '.$_REQUEST['action']);
 try
 {
     lucid::process_request();
