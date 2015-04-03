@@ -17,7 +17,7 @@ class lucid_html_repeater
     # options!
     public $static_height        = null;
     public $filters              = [];
-    public $views                = ['list','thumbnail'];
+    public $views                = ['list']; #,'thumbnail'
     public $page_count_options   = [10,20,50,100];
     public $thumbnail_function   = null;
     public $thumbnail_alignment  = 'justify';
@@ -35,7 +35,13 @@ class lucid_html_repeater
         {
             $this->add_column($column);
         }
-        lucid::log('repeater created');
+    }
+
+    public function add_column($new_column)
+    {
+        $new_column->parent = $this;
+        $this->columns[] = $new_column;
+        return $this;
     }
 
     /* used to update multiple options at once */
@@ -87,7 +93,7 @@ class lucid_html_repeater
 
     public function header_views()
     {
-        if(count($this->views) > 0)
+        if(count($this->views) > 1)
         {
             $this->html .= '<div class="btn-group repeater-views" data-toggle="buttons">';
             foreach($this->views as $view)
@@ -251,13 +257,6 @@ class lucid_html_repeater
 
         $this->js = 'lucid.html.repeater.setup('.json_encode($js_options).');';
         return $this->js;
-    }
-
-    public function add_column($new_column)
-    {
-        $new_column->parent = $this;
-        $this->columns[] = $new_column;
-        return $this;
     }
 
     public function get_data()

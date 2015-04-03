@@ -10,6 +10,12 @@ class lucid_logger
     function write($string,$type='debug')
     {
         global $lucid;
+
+        if(is_object($string))
+        {
+            $string = str_replace("\n","\t",print_r($string,true));
+        }
+
         $time = date('Y-m-d H:i:s');
         $ip   = str_pad($_SERVER['REMOTE_ADDR'],15,' ',STR_PAD_LEFT);
         $id   = $lucid->session->session_id();

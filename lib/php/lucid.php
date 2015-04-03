@@ -10,6 +10,7 @@ class lucid
         include(__DIR__.'/lucid_controller.php');
         include(__DIR__.'/lucid_ruleset.php');
         include(__DIR__.'/lucid_rule.php');
+        include(__DIR__.'/lucid_form.php');
 
         $this->actions = [
             'pre-request'=>[],
@@ -139,6 +140,7 @@ class lucid
         ob_get_clean();
         header('Content-Type: application/json');
         echo json_encode($lucid->response);
+        exit();
     }
 
     public static function process_request()
