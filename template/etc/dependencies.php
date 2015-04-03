@@ -5,7 +5,12 @@ $dependencies = [
     "lib/bootstrap"=>[
         "url"       =>"git@github.com:twbs/bootstrap.git",
         "local-url" =>["file:///opt/git-clones/bootstrap/"],
-        "branch"    =>"master",
+        "branch"    =>"v3.3.4",
+        "revision"  =>null
+    ],
+    "lib/fuelux"=>[
+        "url"       =>"git@github.com:ExactTarget/fuelux.git",
+        "branch"    =>"3.6.4",
         "revision"  =>null
     ],
     "lib/lucid"=>[
@@ -26,7 +31,7 @@ $dependencies = [
     "lib/less.php"=>[
         "url"       =>"git@github.com:oyejorge/less.php.git",
         "local-url" =>["file:///opt/git-clones/less.php/"],
-        "branch"    =>"master",
+        "branch"    =>"v1.7.0.3",
         "revision"  =>null
     ]
 ];
