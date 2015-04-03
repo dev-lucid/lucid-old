@@ -48,6 +48,12 @@ class lucid
         $lucid->response['javascript'] .= $string_to_send;
     }
 
+    public static function special($key,$to_send)
+    {
+        global $lucid;
+        $lucid->response['special'][$key] = $to_send;
+    }
+
     public static function init($www_dir)
     {
         global $lucid;
@@ -225,7 +231,16 @@ class lucid
         }
     }
 
-}   
+    public static function log_request()
+    {
+        lucid::log(str_replace("\n","\t",print_r($_REQUEST,true)));
+    }
 
+    public static function log_response()
+    {
+        global $lucid;
+        lucid::log(str_replace("\n","\t",print_r($lucid->response,true)));
+    }
+}   
 
 ?>
