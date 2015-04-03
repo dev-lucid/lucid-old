@@ -30,7 +30,6 @@ $dependencies = [
     ],
     "lib/less.php"=>[
         "url"       =>"git@github.com:oyejorge/less.php.git",
-        "local-url" =>["file:///opt/git-clones/less.php/"],
         "branch"    =>"v1.7.0.3",
         "revision"  =>null
     ]

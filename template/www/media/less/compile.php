@@ -7,7 +7,7 @@ header('Cache-Control: no-cache, must-revalidate');
 header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
 
 global $less;
-include(__DIR__.'/../../../../../lib/less.php/'.$dependencies['lib/bootstrap']['branch'].'/lessc.inc.php');
+include(__DIR__.'/../../../../../lib/less.php/'.$dependencies['lib/less.php']['branch'].'/lessc.inc.php');
 include(__DIR__.'/../../../etc/less.php');
 
 $css_file_name = Less_Cache::Get( $less['files'], $less );
