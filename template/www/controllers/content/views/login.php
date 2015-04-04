@@ -9,20 +9,17 @@
                 <div class="panel-body">
                     <form role="form" name="testName" action="authentication/login" onsubmit="return lucid.form.submit(this);">
                         <fieldset>
-                            
                             <div class="row">
                                 <div class="col-sm-12 col-md-10  col-md-offset-1 ">
                                     <div style="margin-bottom: 25px" class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                        <input id="login-username" type="text" class="form-control" name="email" value="test@test.com" placeholder="username or email">                                        
+                                        <input id="login-username" type="text" class="form-control" name="email" value="user1@localhost" placeholder="username or email">                                        
                                     </div>
 
                                     <div style="margin-bottom: 25px" class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                                         <input id="login-password" type="password" class="form-control" name="password" value="password1" placeholder="password">
                                     </div>
-
-
 
                                     <div class="input-group">
                                         <div class="checkbox">

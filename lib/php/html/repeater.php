@@ -301,6 +301,24 @@ class lucid_html_repeater
             'items'=>$data
         );
     }
+
+    public function render()
+    {
+        lucid::javascript($this->render_javascript());
+        return $this->render_html();
+    }
+
+    public function handle_return($controller)
+    {
+        if($_REQUEST['action'] == $this->url)
+        {
+            lucid::special($this->id,$this->get_data());
+        }
+        else
+        {
+            $controller->send_return($this);
+        }
+    }
 }
 
 ?>

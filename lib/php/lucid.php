@@ -243,6 +243,11 @@ class lucid
         global $lucid;
         lucid::log(str_replace("\n","\t",print_r($lucid->response,true)));
     }
+
+    public static function redirect($new_url)
+    {
+        lucid::javascript('lucid.redirect(\''.$new_url.'\');');
+    }
 }   
 
 ?>

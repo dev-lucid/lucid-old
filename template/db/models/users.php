@@ -6,7 +6,7 @@ class lucid_model_users extends lucid_model
     
     public function organization()
     {
-        return $this->has_one('organizations','org_id','org_id')->find_one();
+        return $this->has_one('organizations','org_id','org_id');
     }
 }
 ?>

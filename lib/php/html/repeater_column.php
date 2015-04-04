@@ -29,7 +29,8 @@ class lucid_html_repeater_column
         $render_func = $this->render_func;
         if (is_null($render_func))
         {
-            return $data[$this->property];
+            $prop = $this->property;
+            return $data->$prop;
         }
         else
         {

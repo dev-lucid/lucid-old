@@ -21,6 +21,7 @@ $files = array(
     __DIR__.'/../../../lib/lucid/'.$dependencies['lib/lucid']['branch'].'/lib/js/lucid.ruleset.js', 
     __DIR__.'/../../../lib/lucid/'.$dependencies['lib/lucid']['branch'].'/lib/js/lucid.rule.js', 
     __DIR__.'/../../../lib/lucid/'.$dependencies['lib/lucid']['branch'].'/lib/js/lucid.html.js', 
+    __DIR__.'/../../../lib/fuelux/3.6.4/dist/js/fuelux.min.js', 
     __DIR__.'/../www/media/js/customizations.js',
 );
 ?>

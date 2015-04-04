@@ -8,5 +8,10 @@ class lucid_model_organizations extends lucid_model
     {
         return $this->has_many('users','org_id','org_id');
     }
+
+    public function role()
+    {
+        return $this->has_one('roles','role_id','role_id');
+    }
 }
 ?>

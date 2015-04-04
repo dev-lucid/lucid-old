@@ -22,6 +22,10 @@ mkdir $app/www;
 mkdir $app/www/controllers;
 mkdir $app/www/controllers/content;
 mkdir $app/www/controllers/content/views;
+mkdir $app/www/controllers/authentication;
+mkdir $app/www/controllers/authentication/views;
+mkdir $app/www/controllers/account;
+mkdir $app/www/controllers/account/views;
 mkdir $app/www/media;
 mkdir $app/www/media/fonts;
 mkdir $app/www/media/images;
@@ -43,6 +47,7 @@ cp $template/etc/logger.php $app/etc/
 $cmd $template/db/models/users.php $app/db/models/
 $cmd $template/db/models/organizations.php $app/db/models/
 $cmd $template/db/models/patches.php $app/db/models/
+$cmd $template/db/models/roles.php $app/db/models/
 $cmd $template/db/models/vw_users_details.php $app/db/models/
 $cmd $template/db/models/vw_organizations_details.php $app/db/models/
 $cmd $template/db/build.sqlite.sql $app/db/
@@ -60,6 +65,14 @@ $cmd $template/www/controllers/content/views/about.php $app/www/controllers/cont
 $cmd $template/www/controllers/content/views/contact.php $app/www/controllers/content/views/
 $cmd $template/www/controllers/content/views/login.php $app/www/controllers/content/views/
 $cmd $template/www/controllers/content/views/sign_up.php $app/www/controllers/content/views/
+
+$cmd $template/www/controllers/account/views/dashboard.php $app/www/controllers/account/views/
+$cmd $template/www/controllers/account/views/admin.php $app/www/controllers/account/views/
+$cmd $template/www/controllers/account/views/organization.php $app/www/controllers/account/views/
+$cmd $template/www/controllers/account/views/user.php $app/www/controllers/account/views/
+$cmd $template/www/controllers/account/views/users_table.php $app/www/controllers/account/views/
+
+$cmd $template/www/controllers/authentication/authentication.php $app/www/controllers/authentication/
 
 echo "Retrieving recommended jquery version (1.11.1)"
 wget -q https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js -O $app/www/media/js/jquery.js
