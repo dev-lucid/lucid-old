@@ -65,7 +65,9 @@ $cmd $template/www/controllers/content/views/about.php $app/www/controllers/cont
 $cmd $template/www/controllers/content/views/contact.php $app/www/controllers/content/views/
 $cmd $template/www/controllers/content/views/login.php $app/www/controllers/content/views/
 $cmd $template/www/controllers/content/views/sign_up.php $app/www/controllers/content/views/
+$cmd $template/www/controllers/content/views/not_authorized.php $app/www/controllers/content/views/
 
+$cmd $template/www/controllers/account/account.php $app/www/controllers/account/
 $cmd $template/www/controllers/account/views/dashboard.php $app/www/controllers/account/views/
 $cmd $template/www/controllers/account/views/admin.php $app/www/controllers/account/views/
 $cmd $template/www/controllers/account/views/organization.php $app/www/controllers/account/views/
