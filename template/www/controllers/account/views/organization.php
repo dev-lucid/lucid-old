@@ -1,14 +1,16 @@
 <?php
-if($_REQUEST['org_id'] != $lucid->session->org_id and $lucid->session->role_name !== 'admin')
-{
-    lucid::log('User '.$lucid->session->user_id.' attempted to edit organization '.$_REQUEST['org_id'].', which is not their organization.','security');
-    lucid::redirect('content/not_authorized');
-}
 $org = Model::factory('organizations')->find_one($_REQUEST['org_id']);
-
+$org->permission_check('select');
 ?>
 <h1>Editing <?=$org->name?></h1>
+<form name="orgEditForm" action="account/org_save" onsubmit="return lucid.form.submit(this);">
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" name="name" value="<?=$org->name?>" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <input type="hidden" name="org_id" value="<?=$org->org_id?>" />
+</form>
 <?php
-
 lucid::replace('#body');
 ?>
