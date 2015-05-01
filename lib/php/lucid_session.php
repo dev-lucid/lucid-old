@@ -12,14 +12,23 @@ class lucid_session implements ArrayAccess
         return session_id();
     }
 
-    function __get($name)
+    function destroy($create_new = true)
     {
-        return $_SESSION[$name];
+        session_destroy();
+        if ($create_new === true)
+        {
+            session_start();
+        }
     }
 
-    function __set($name,$value)
+    function __get($offset)
     {
-        $_SESSION[$name] = $value;
+        return (isset($_SESSION[$offset]))?$_SESSION[$offset]:null;
+    }
+
+    function __set($offset,$value)
+    {
+        $_SESSION[$offset] = $value;
     }
 
     function __isset($name)
@@ -39,7 +48,7 @@ class lucid_session implements ArrayAccess
 
     public function offsetGet ( $offset )
     {
-        return $_SESSION[$offset];
+        return (isset($_SESSION[$offset]))?$_SESSION[$offset]:null;
     }
 
     public function offsetSet ( $offset , $value)

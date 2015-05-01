@@ -20,61 +20,87 @@ mkdir $app/var;
 mkdir $app/var/cache;
 mkdir $app/www;
 mkdir $app/www/controllers;
-mkdir $app/www/controllers/content;
-mkdir $app/www/controllers/content/views;
-mkdir $app/www/controllers/authentication;
-mkdir $app/www/controllers/authentication/views;
+
 mkdir $app/www/controllers/account;
 mkdir $app/www/controllers/account/views;
+
+mkdir $app/www/controllers/authentication;
+
+mkdir $app/www/controllers/content;
+mkdir $app/www/controllers/content/views;
+
+mkdir $app/www/controllers/dataloader;
+
+mkdir $app/www/controllers/navigation;
+mkdir $app/www/controllers/navigation/views;
+
 mkdir $app/www/media;
-mkdir $app/www/media/fonts;
 mkdir $app/www/media/images;
 mkdir $app/www/media/js;
 mkdir $app/www/media/less;
+mkdir $app/www/media/less/fonts;
 
 echo "Copying files"
 cp $template/bin/tail-log $app/bin/
 
-cp $template/etc/dependencies.php $app/etc/
+cp $template/etc/autoload.php $app/etc/
 cp $template/etc/db.php $app/etc/
+cp $template/etc/dependencies.php $app/etc/
+cp $template/etc/environment.php $app/etc/
+cp $template/etc/i18n.php $app/etc/
 cp $template/etc/js.php $app/etc/
 cp $template/etc/less.php $app/etc/
-cp $template/etc/environment.php $app/etc/
-cp $template/etc/autoload.php $app/etc/
-cp $template/etc/session.php $app/etc/
 cp $template/etc/logger.php $app/etc/
+cp $template/etc/security.php $app/etc/
+cp $template/etc/session.php $app/etc/
 
 $cmd $template/db/models/users.php $app/db/models/
 $cmd $template/db/models/organizations.php $app/db/models/
 $cmd $template/db/models/patches.php $app/db/models/
 $cmd $template/db/models/roles.php $app/db/models/
+$cmd $template/db/models/countries.php $app/db/models/
+$cmd $template/db/models/regions.php $app/db/models/
+$cmd $template/db/models/addresses.php $app/db/models/
+$cmd $template/db/models/user_auth_tokens.php $app/db/models/
 $cmd $template/db/models/vw_users_details.php $app/db/models/
 $cmd $template/db/models/vw_organizations_details.php $app/db/models/
+
 $cmd $template/db/build.sqlite.sql $app/db/
 $cmd $template/db/views/vw_users_details.sql $app/db/views/
 $cmd $template/db/views/vw_organizations_details.sql $app/db/views/
 
 $cmd $template/www/index.html $app/www/
 $cmd $template/www/app.php $app/www/
+
 cp $template/www/media/js/compile.php $app/www/media/js/
 cp $template/www/media/js/customizations.js $app/www/media/js/
 cp $template/www/media/less/compile.php $app/www/media/less/
 cp $template/www/media/less/customizations.less $app/www/media/less/
+
+cp $template/www/media/less/customizations.less $app/www/media/less/
+
 $cmd $template/www/controllers/content/views/index.php $app/www/controllers/content/views/
 $cmd $template/www/controllers/content/views/about.php $app/www/controllers/content/views/
 $cmd $template/www/controllers/content/views/contact.php $app/www/controllers/content/views/
 $cmd $template/www/controllers/content/views/login.php $app/www/controllers/content/views/
-$cmd $template/www/controllers/content/views/sign_up.php $app/www/controllers/content/views/
 $cmd $template/www/controllers/content/views/not_authorized.php $app/www/controllers/content/views/
 
 $cmd $template/www/controllers/account/account.php $app/www/controllers/account/
+$cmd $template/www/controllers/account/views/addresses_grid.php $app/www/controllers/account/views/
 $cmd $template/www/controllers/account/views/dashboard.php $app/www/controllers/account/views/
-$cmd $template/www/controllers/account/views/admin.php $app/www/controllers/account/views/
-$cmd $template/www/controllers/account/views/organization.php $app/www/controllers/account/views/
-$cmd $template/www/controllers/account/views/user.php $app/www/controllers/account/views/
-$cmd $template/www/controllers/account/views/users_table.php $app/www/controllers/account/views/
+$cmd $template/www/controllers/account/views/edit_organization.php $app/www/controllers/account/views/
+$cmd $template/www/controllers/account/views/edit_user.php $app/www/controllers/account/views/
+$cmd $template/www/controllers/account/views/organizations_grid.php $app/www/controllers/account/views/
+$cmd $template/www/controllers/account/views/organizations.php $app/www/controllers/account/views/
+$cmd $template/www/controllers/account/views/users_grid.php $app/www/controllers/account/views/
+$cmd $template/www/controllers/account/views/users.php $app/www/controllers/account/views/
 
 $cmd $template/www/controllers/authentication/authentication.php $app/www/controllers/authentication/
+$cmd $template/www/controllers/dataloader/dataloader.php $app/www/controllers/dataloader/
+
+$cmd $template/www/controllers/navigation/navigation.php $app/www/controllers/navigation/
+$cmd $template/www/controllers/navigation/views/nav1.php $app/www/controllers/navigation/views/
+$cmd $template/www/controllers/navigation/views/nav2.php $app/www/controllers/navigation/views/
 
 echo "Retrieving recommended jquery version (1.11.1)"
 wget -q https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js -O $app/www/media/js/jquery.js

@@ -1,15 +1,15 @@
 <?php
 
-class lucid_form extends Model
+class lucid_form
 {
-    function send_errors($error_list,$deinit = true)
+    public static function send_errors($error_list,$deinit = true)
     {
         if(is_string($error_list))
         {
-            $error_list = [$error_list];
+            $error_list = [''=>[$error_list]];
         }
 
-        lucid::javascript("lucid.form.showErrors('".$_REQUEST['_formIdentifier']."',".json_encode($error_list).");");
+        lucid::javascript("lucid.form.showErrors('".$_REQUEST['_form_identifier']."',".json_encode($error_list).");");
 
         if($deinit === true)
         {

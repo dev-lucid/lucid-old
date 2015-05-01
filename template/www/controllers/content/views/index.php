@@ -1,15 +1,12 @@
-<h1>Bootstrap starter template</h1>
-<p class="lead">
-  Use this document as a way to quickly start any new project.
-  <br /> All you get is this text and a mostly barebones HTML document.
-  test
-  <?php
-$users = Model::factory('users')->find_many();
-foreach ($users as $user) {
-    echo($user->email.' / '.$user->organization()->name.'<br />');
-}
-?>
-</p>
-<?php 
+<div class="jumbotron">
+  <h1>Hello, world!</h1>
+  <p>...</p>
+  <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+</div>
+<?php
+
 lucid::replace('#body');
+lucid::set_nav('nav1','nav1');
+lucid::set_nav('nav2','nav2');
+lucid::set_title(lucid::i18n('navigation-home'));
 ?>

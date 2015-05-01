@@ -7,10 +7,13 @@ class lucid
     function __construct()
     {
         # load all secondary libraries
+        include(__DIR__.'/lucid_error.php');
         include(__DIR__.'/lucid_controller.php');
+        include(__DIR__.'/lucid_i18n.php');
         include(__DIR__.'/lucid_ruleset.php');
         include(__DIR__.'/lucid_rule.php');
         include(__DIR__.'/lucid_form.php');
+        include(__DIR__.'/lucid_format.php');
 
         $this->actions = [
             'pre-request'=>[],
@@ -22,7 +25,22 @@ class lucid
             'default_position'=>'body',
             'paths'=>[],
             'view_params' =>[],
-            'view_returns'=>[],
+            'view_return'=>[],
+            'language_tag' => 'en-US',
+            'dictionaries'=>[__DIR__.'/../dicts/'],
+            'dictionary_messages' => [],
+            'nav_state' => [],
+            'formats'=> [
+                'dates'=> [
+                    // the key can be passed into lucid_format::date as the second parameter. The value will be passed to php's date function as the 1st parameter
+                    'ISO8601' => 'c',
+                    'RFC2822' => 'r',
+                    'US-date' => 'F j, Y',
+                    'US-datetime' => 'F j, Y H:i',
+                
+                ]
+                
+            ]
         ];
     }
 
@@ -41,6 +59,30 @@ class lucid
             'javascript'=>'',
             'success'=>true,
         ]; 
+    }
+
+    public static function message($type='info', $title='', $body='', $closeable=true, $auto_close = true, $auto_close_delay=3000)
+    {
+        global $lucid;
+
+        # generate an id. Needed for the auto_close flag.
+        $id = 'lucid-message-'.time();
+
+        $html = '<div class="alert alert-'.$type.' alert-dismissible fade in" role="alert" id="'.$id.'">';
+        if ($closeable === true)
+        {
+            $html .= '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+        }
+        $html .= '<strong>'.$title.'</strong>';
+        $html .= $body;
+        $html .= '</div>';
+
+        lucid::replace('#messages',$html);
+
+        if ($auto_close === true)
+        {
+            lucid::javascript('window.setTimeout(function() { $(\'#'.$id.'\').alert(\'close\'); }, '.$auto_close_delay.');');
+        }
     }
 
     public static function javascript($string_to_send)
@@ -63,7 +105,6 @@ class lucid
         $lucid->config['paths']['app'] = $www_dir.'../';
         lucid::clear_response();
         ob_start();
-        lucid::process_action_list($lucid->actions['pre-request']);
     }
 
     public static function get_buffer()
@@ -138,21 +179,29 @@ class lucid
         global $lucid;
         lucid::process_action_list($lucid->actions['post-request']);
         ob_get_clean();
-        header('Content-Type: application/json');
-        echo json_encode($lucid->response);
+        if(isset($_REQUEST['_form_identifier']))
+        {
+            echo('<html><body><script language="JavaScript" type="text/javascript">parent.lucid.handleResponse('.json_encode($lucid->response).');</script></body></html>');
+        }
+        else
+        {
+            header('Content-Type: application/json');
+            echo json_encode($lucid->response);        
+        }
         exit();
     }
 
     public static function process_request()
     {
         global $lucid;
+        lucid::process_action_list($lucid->actions['pre-request']);
 
         if(!isset($_REQUEST['action']))
         {
             throw new Exception('No action in request');
         }
 
-        $req_action = split('/',$_REQUEST['action']);
+        $req_action = explode('/',$_REQUEST['action']);
 
         if(count($req_action) !== 2)
         {
@@ -185,6 +234,12 @@ class lucid
         }
     }
 
+    public static function add_action_to_list($list,$controller,$method,$parameters=array())
+    {
+        global $lucid;
+        $lucid->actions[$list][] = [$controller,$method,$parameters];
+    }
+
     public static function process_action($controller, $method, $parameters=[])
     {
         global $lucid;
@@ -193,26 +248,33 @@ class lucid
         $controller_class = 'lucid_controller_'.$controller;
         $view_file        = $lucid->config['paths']['www'].'controllers/'.$controller.'/views/'.$method.'.php';
 
-        # make sure the controller folder eixsts
-        if(!file_exists($controller_path))
+        if (!class_exists($controller_class))
         {
-            throw new Exception('Could not find folder for controller, looked for '.$controller_path);   
+            # make sure the controller folder eixsts
+            if(!file_exists($controller_path))
+            {
+                throw new Exception('lucid/lib/php/lucid.php: Could not find folder for controller, looked for '.$controller_path);   
+            }
+
+             # create the controller class
+            if(file_exists($controller_file))
+            {
+                include($controller_file);
+                if (!class_exists($controller_class))
+                {
+                    throw new Exception('lucid/lib/php/lucid.php: Included controller file '.$controller_file.', but after load could not find controller class. Should be called '.$controller_class);;       
+                }
+            }
         }
 
-        # create the controller class
-        if(file_exists($controller_file))
+        # at this point, the code has tried to load the controller file if it exists. 
+        # if the class does exist now, instantiate it. If not, create a generic controller
+        if (class_exists($controller_class))
         {
-            # if a root controller class exists, use it. 
-            include($controller_file);
-            if (!class_exists($controller_class))
-            {
-                throw new Exception('Included controller file, but after load could not find controller class. Should be called '.$controller_class);;       
-            }
             $controller = new $controller_class($controller,$controller_path);
         }
         else
         {
-            # Plan B, create a generic one. This can still be used for loading views
             $controller = new lucid_controller($controller,$controller_path);
         }
 
@@ -242,6 +304,38 @@ class lucid
     {
         global $lucid;
         lucid::log(str_replace("\n","\t",print_r($lucid->response,true)));
+    }
+
+    public static function i18n($phrase,$keys=array())
+    {
+        return call_user_func_array('lucid_i18n::translate', func_get_args());
+    }
+
+    public static function set_nav($nav_area, $nav_view)
+    {
+        global $lucid;
+        $lucid->config['nav_state'][$nav_area] = $nav_view;
+    }
+
+    public static function session()
+    {
+        global $lucid;
+        return $lucid->session;
+    }
+ 
+    public static function security()
+    {
+        global $lucid;
+        return $lucid->security;
+    }
+       
+    public static function request($field = null, $default_value = null)
+    {
+        if(is_null($field))
+        {
+            return $_REQUEST;
+        }
+        return (isset($_REQUEST[$field]))?$_REQUEST[$field]:$default_value;
     }
 
     public static function redirect($new_url)

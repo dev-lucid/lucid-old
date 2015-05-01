@@ -8,11 +8,6 @@ $dependencies = [
         "branch"    =>"v3.3.4",
         "revision"  =>null
     ],
-    "lib/fuelux"=>[
-        "url"       =>"git@github.com:ExactTarget/fuelux.git",
-        "branch"    =>"3.6.4",
-        "revision"  =>null
-    ],
     "lib/lucid"=>[
         "url"      =>"git@github.com:Dev-Lucid/lucid.git",
         "branch"   =>"1.0-bootstrap",

@@ -8,28 +8,27 @@ class lucid_controller
         $this->path = $path;
     }
 
-    public function get_parameters()
+    public function parameter($index, $default_value=null)
     {
         global $lucid;
-        return array_pop($lucid->config['view_params']);
+        return (isset($lucid->config['view_params'][$this->_params_index][$index]))?$lucid->config['view_params'][$this->_params_index][$index]:$default_value;
     }
 
     public function send_return($value=null)
     {
         global $lucid;
-        $lucid->config['view_return'][] = $value;
+        $lucid->config['view_return'][$this->_return_index] = $value;
     }
 
     function __call($method,$parameters)
     {
         global $lucid;
-        $pre_params_count = count($lucid->config['view_params']);
-        $pre_return_count = count($lucid->config['view_return']);
-
-        # push the latest parameters onto the view_params array
-        # this allows a way to pass parameters onto views
-        $lucid->config['view_params'][] = $parameters[0];
-
+        $this->_params_index = count($lucid->config['view_params']);
+        $this->_return_index = count($lucid->config['view_return']);
+        
+        $lucid->config['view_params'][] = $parameters;
+        $lucid->config['view_return'][] = null;
+        
         $view_path = $this->path.'/views/'.$method.'.php';
         if (file_exists($view_path))
         {
@@ -37,23 +36,13 @@ class lucid_controller
         }
         else
         {
-            throw new Exception('Could not find view file '.$view_path);
+            throw new Exception('lucid/lib/php/lucid_controller.php: Could not find view file '.$view_path);
         }
 
-        # if the view didn't use its parameters (which would pop it off), then pop them off for the view
-        if (count($lucid->config['view_params']) > $pre_params_count)
-        {
-            array_pop($lucid->config['view_params']);
-        }
-        # if the view 
-        if (count($lucid->config['view_return']) > $pre_return_count)
-        {
-            return array_pop($lucid->config['view_return']);
-        }
-        else
-        {
-            return true;
-        }
+        # remove the view params that were sent
+        array_pop($lucid->config['view_params']);
+        
+        return array_pop($lucid->config['view_return']);
     }
 }
 

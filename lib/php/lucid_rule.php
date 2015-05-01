@@ -1,8 +1,44 @@
 <?php
 
-class lucid_rule
+class lucid_rule implements interface__lucid_rule
 {
-    
+    public $js_constructor = 'new lucid.rule';
+
+    public function __construct($field='', $type='', $message = '', $parameters=array())
+    {
+        $this->field      = $field;
+        $this->type       = $type;
+        $this->message    = $message;
+        $this->parameters = $parameters;
+    }
+
+    public function validate($data)
+    {
+        $value = $data[$this->field];
+        switch($this->type)
+        {
+            case 'length':
+                if(isset($this->parameters['min']) and strlen($value) < isset($this->parameters['min']))
+                {
+                    return false;
+                }
+                if(isset($this->parameters['min']) and strlen($value) > isset($this->parameters['max']))
+                {
+                    return false;
+                }
+                return true;
+                break;
+            case 'email':
+                return (preg_match('.+\\@.+\\..+',$value) == 0);
+                break;
+        }
+    }
+
+    public function render_javascript()
+    {
+        $js = $this->js_constructor.'(\''.$this->field.'\',\''.$this->type.'\',\''.$this->message.'\','.json_encode($this->parameters).')';
+        return $js;
+    }
 }
 
 ?>
