@@ -1,0 +1,33 @@
+{
+    "name": "Dev-Lucid/Lucid",
+    "type": "library",
+    "description": "A php library for building apps. Includes a router, form validition, and a sample app using idiorm/paris for database access, phinx for migrations, bootstrap.",
+    "keywords": ["php", "bootstrap"],
+    "homepage": "https://github.com/Dev-Lucid/lucid",
+    "support": {
+        "issues": "https://github.com/Dev-Lucid/php-bootstrap/issues",
+        "source": "https://github.com/Dev-Lucid/php-bootstrap"
+    },
+    "authors": [
+        {
+            "name": "Mike Thorn",
+            "email": "mthorn@devlucid.com",
+            "homepage": "http://devlucid.com",
+            "role": "Developer"
+        }
+    ],
+    "license": [
+        "MIT"
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "classmap": ["lucid.php"]
+    },
+    "bin": [
+        "bin/new-app",
+        "bin/rebuild_models.php"
+    ]
+
+}
