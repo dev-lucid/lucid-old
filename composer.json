@@ -5,8 +5,8 @@
     "keywords": ["php", "bootstrap"],
     "homepage": "https://github.com/Dev-Lucid/lucid",
     "support": {
-        "issues": "https://github.com/Dev-Lucid/php-bootstrap/issues",
-        "source": "https://github.com/Dev-Lucid/php-bootstrap"
+        "issues": "https://github.com/Dev-Lucid/lucid/issues",
+        "source": "https://github.com/Dev-Lucid/lucid"
     },
     "authors": [
         {
@@ -23,7 +23,7 @@
         "php": ">=5.3.0"
     },
     "autoload": {
-        "classmap": ["lucid.php"]
+        "classmap": ["lib/php/lucid.php"]
     },
     "bin": [
         "bin/new-app",
