@@ -17,7 +17,7 @@ class lucid_html_grid_filter_search extends lucid_html_grid_filter implements in
 
     public function render_html()
     {
-        $this->html = '<div class="input-group pull-right" style="width:200px;">';
+        $this->html = '<div class="input-group pull-right" style="width:15em;">';
         $this->html .= '<input type="text" class="form-control input-sm" placeholder="'.lucid::i18n('ui-grid-search-placeholder').'" id="'.$this->parent->id.'-'.$this->id_suffix.'" onkeyup="lucid.html.grid.grids[\''.$this->parent->id.'\'].delayedReload();" />';
         $this->html .= '<span class="input-group-btn"><button class="btn btn-default btn-sm" type="button"><span class="glyphicon glyphicon-search"></span></button></span>';
         $this->html .= '</div>';

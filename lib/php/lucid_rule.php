@@ -17,19 +17,23 @@ class lucid_rule implements interface__lucid_rule
         $value = $data[$this->field];
         switch($this->type)
         {
+            case 'match':
+                $match_value = $data[$this->parameters['match']];
+                return ($value == $match_value);
+                break;
             case 'length':
                 if(isset($this->parameters['min']) and strlen($value) < isset($this->parameters['min']))
                 {
                     return false;
                 }
-                if(isset($this->parameters['min']) and strlen($value) > isset($this->parameters['max']))
+                if(isset($this->parameters['max']) and strlen($value) > isset($this->parameters['max']))
                 {
                     return false;
                 }
                 return true;
                 break;
             case 'email':
-                return (preg_match('.+\\@.+\\..+',$value) == 0);
+                return (preg_match('/([a-z0-9_]+|[a-z0-9_]+\.[a-z0-9_]+)@(([a-z0-9]|[a-z0-9]+\.[a-z0-9]+)+\.([a-z]{2,4}))/i',$value) == 1);
                 break;
         }
     }

@@ -27,6 +27,11 @@ $dependencies = [
         "url"       =>"git@github.com:oyejorge/less.php.git",
         "branch"    =>"v1.7.0.3",
         "revision"  =>null
+    ],
+    "lib/phpmailer"=>[
+        "url"       =>"git@github.com:PHPMailer/PHPMailer.git",
+        "branch"    =>"v5.2.9",
+        "revision"  =>null
     ]
 ];
 

@@ -46,7 +46,7 @@ class lucid_ruleset
             $result = $rule->validate($data);
             if ($result !== true)
             {
-                if (!is_array($errors[$rule->field]))
+                if (!isset($errors[$rule->field]) or !is_array($errors[$rule->field]))
                 {
                     $errors[$rule->field] = [];
                 }

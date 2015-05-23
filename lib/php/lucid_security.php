@@ -37,6 +37,15 @@ class lucid_security
         $user_role = lucid::session()->{$this->session_role_name_property};
         return ($user_role !== $this->default_role_name);
     }
+
+    public function require_logged_in()
+    {
+        $user_role = lucid::session()->{$this->session_role_name_property};
+        if ($user_role === $this->default_role_name)
+        {
+            throw new Exception('lucid/lib/php/lucid_security: Unauthenticated user attempted to access functionality that required them to be logged in.');   
+        }
+    }
     
     public function is_role($required_role)
     {
@@ -135,6 +144,18 @@ class lucid_security
             throw new Exception('lucid/lib/php/lucid_security: User did not have any of the necessary permissions to perform an action. The user\'s permissions were: '.str_replace("\n","\t",print_r($user_permissions,true)).', the required permissions were: '.str_replace("\n","\t",print_r($required_permissions,true)) );
         }
         return true;
+    }
+
+    public function generate_password($length = 10)
+    {
+        $character_set = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789-+=!@#$%";
+        $password      = '';
+        $set_length    = strlen($character_set) - 1;
+        for ($i = 0; $i < $length; $i++)
+        {
+            $password .= $character_set[rand(0, $set_length)];
+        }
+        return $password;
     }
 }
 

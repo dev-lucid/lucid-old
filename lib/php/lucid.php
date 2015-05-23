@@ -30,6 +30,12 @@ class lucid
             'dictionaries'=>[__DIR__.'/../dicts/'],
             'dictionary_messages' => [],
             'nav_state' => [],
+            'mailer'=> [
+                'included'=>false,
+                'class'=>null,
+                'includes'=> [],
+                'properties' => [],
+            ],
             'formats'=> [
                 'dates'=> [
                     // the key can be passed into lucid_format::date as the second parameter. The value will be passed to php's date function as the 1st parameter
@@ -243,11 +249,20 @@ class lucid
     public static function process_action($controller, $method, $parameters=[])
     {
         global $lucid;
+        $view_file = $lucid->config['paths']['www'].'controllers/'.$controller.'/views/'.$method.'.php';
+        $controller = lucid::controller($controller);
+
+        # call the appropriate method of the controller
+        return $controller->$method($parameters);
+    }
+
+    public static function controller($controller)
+    {
+        global $lucid;
         $controller_path  = $lucid->config['paths']['www'].'controllers/'.$controller;
         $controller_file  = $lucid->config['paths']['www'].'controllers/'.$controller.'/'.$controller.'.php';
         $controller_class = 'lucid_controller_'.$controller;
-        $view_file        = $lucid->config['paths']['www'].'controllers/'.$controller.'/views/'.$method.'.php';
-
+        
         if (!class_exists($controller_class))
         {
             # make sure the controller folder eixsts
@@ -278,8 +293,7 @@ class lucid
             $controller = new lucid_controller($controller,$controller_path);
         }
 
-        # call the appropriate method of the controller
-        return $controller->$method($parameters);
+        return $controller;
     }
 
     public static function log($string,$type='debug')
@@ -328,6 +342,37 @@ class lucid
         global $lucid;
         return $lucid->security;
     }
+
+    public static function mailer()
+    {
+        global $lucid;
+
+        if (is_null($lucid->config['mailer']['class']))
+        {
+            throw new Exeption('lucid/lib/php/lucid.php: tried to call mailer, but no class name for mailer was set. Try phpmailer?');
+        }
+
+        $class_name = $lucid->config['mailer']['class'];
+
+        if ($lucid->config['mailer']['included'] === false)
+        {
+            foreach($lucid->config['mailer']['includes'] as $include)
+            {
+                include($include);
+            }
+            $lucid->config['mailer']['included'] = true;
+        }
+
+
+        $mail_class = new $class_name();
+
+        foreach($lucid->config['mailer']['properties'] as $key=>$value)
+        {
+            $mail_class->$key = $value;
+        }
+
+        return $mail_class;
+    }
        
     public static function request($field = null, $default_value = null)
     {
@@ -336,6 +381,35 @@ class lucid
             return $_REQUEST;
         }
         return (isset($_REQUEST[$field]))?$_REQUEST[$field]:$default_value;
+    }
+
+    public static function app_url($action,$parameters=[])
+    {
+        $url = (isset($_SERVER['HTTPS']))?'https://':'http://';
+        $url .= $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+        $url .= '?action='.$action;
+        foreach($parameters as $key=>$value)
+        {
+            $url .= '&'.urlencode($key).'='.urlencode($value);
+        }
+        return $url;
+    }
+
+    public static function index_url($action,$parameters=[])
+    {
+        $url = (isset($_SERVER['HTTPS']))?'https://':'http://';
+        $url .= $_SERVER['HTTP_HOST'] . '/index.html';
+        $url .= '#!'.$action;
+        foreach($parameters as $key=>$value)
+        {
+            $url .= '|'.urlencode($key).'|'.urlencode($value);
+        }
+        return $url;
+    }
+
+    public static function reload()
+    {
+        lucid::javascript('location.reload();');
     }
 
     public static function redirect($new_url)
