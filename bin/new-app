@@ -59,6 +59,8 @@ sqlite3 development.sqlite ".read build/sqlite.views.sql"
 
 echo "adding ignores, touching scripts/empty.txt"
 touch $app/scripts/empty.txt;
+touch $app/database/migrations/empty.txt;
+touch $app/app/media/images/empty.txt;
 cp $template/gitignore $app/.gitignore;
 
 echo "-----------------------"
