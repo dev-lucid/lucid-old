@@ -1,0 +1,5 @@
+#!/bin/sh
+dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+app="$dir/.."
+port=${1-text}
+php -S 127.0.0.1:$port -t $app

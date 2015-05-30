@@ -27,6 +27,7 @@
     },
     "bin": [
         "bin/new-app",
+        "bin/launch",
         "bin/rebuild_models.php"
     ]
 

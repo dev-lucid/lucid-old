@@ -21,6 +21,6 @@
         "Dev-Lucid/php-bootstrap": "v3.3.4.x-dev",
         "Dev-Lucid/lucid": "dev-1.0-bootstrap",
         "robmorgan/phinx": "dev-master",
-        "phpmailer/phpmailer": "dev-master",
+        "phpmailer/phpmailer": "dev-master"
     }
 }

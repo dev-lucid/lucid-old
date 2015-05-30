@@ -19,17 +19,23 @@ mkdir $app/app/media/images;
 mkdir $app/app/media/less;
 mkdir $app/app/media/less/fonts;
 
+echo "Coping app files"
 cp $template/config/*.php $app/config/
+cp $template/app/*.php $app/app/
 cp $template/database/build* $app/database/
 cp $template/database/models/* $app/database/models/
-cp $template/app/controllers/*.php $app/app/controllers/
 cp $template/app/views/*.php $app/app/views/
+cp $template/app/controllers/*.php $app/app/controllers/
 
+echo "Installing libraries"
 cp $template/composer.json $app
-
+cd $app;
+rm composer.lock
+composer install
 
 echo "Retrieving recommended jquery version (1.11.1)"
-wget -q https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js -O $app/app/media/js/jquery.js
+curl "https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" > jquery.min.js
+mv jquery.min.js $app/app/media/js/;
 
 echo "Building basic database"
 cd $app/database/;
