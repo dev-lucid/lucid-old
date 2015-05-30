@@ -47,14 +47,19 @@ cp $app/vendor/twbs/bootstrap/fonts/* $app/app/media/less/fonts/;
 
 
 echo "Retrieving recommended jquery version (1.11.1)"
-curl "https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" > jquery.min.js
-mv jquery.min.js $app/app/media/js/jquery.js;
+curl "https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" > jquery.js
+mv jquery.js $app/app/media/js/jquery.js;
 
 echo "Building basic database"
 cd $app/database/;
 sqlite3 development.sqlite ".read build/sqlite.regions.sql"
 sqlite3 development.sqlite ".read build/sqlite.main.sql"
 sqlite3 development.sqlite ".read build/sqlite.views.sql"
+
+
+echo "adding ignores, touching scripts/empty.txt"
+touch $app/scripts/empty.txt;
+cp $template/gitignore $app/.gitignore;
 
 echo "-----------------------"
 echo "App complete. to run this app, scripts/launch $1;"

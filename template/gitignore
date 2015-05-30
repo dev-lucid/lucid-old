@@ -1,0 +1,10 @@
+debug.log
+cache/*
+vendor/*
+scripts/dbpatch
+scripts/launch
+scripts/new-app
+scripts/phinx
+scripts/rebuild_models.php
+scripts/tail-log
+scripts/lessc
