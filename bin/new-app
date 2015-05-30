@@ -1,9 +1,7 @@
 #!/bin/sh
 dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-name=$1
-cmd=$2
-app="$dir/../../../../"
-template=$dir/../template
+app="$dir/.."
+template=$dir/../vendor/Dev-Lucid/Lucid/template
 
 echo "Making directories"
 mkdir $app/database;
@@ -22,7 +20,7 @@ mkdir $app/app/media/less;
 mkdir $app/app/media/less/fonts;
 
 cp $template/config/*.php $app/config/
-cp $template/database/*.php $app/database/
+cp $template/database/build* $app/database/
 cp $template/database/models/* $app/database/models/
 cp $template/app/controllers/*.php $app/app/controllers/
 cp $template/app/views/*.php $app/app/views/
