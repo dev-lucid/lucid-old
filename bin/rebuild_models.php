@@ -1,11 +1,11 @@
 <?php 
-$app_name   = $argv[1];
-$app_dir    = $argv[2];
-$model_path = $app_dir.'/db/models/';
+$app_dir = __DIR__.'/../../../../';
+$model_path = $app_dir.'database/models/';
 
 # include necessary configuration files
-include($app_dir.'/etc/db.php');
-include($app_dir.'/etc/autoload.php');
+include($app_dir.'/vendor/autoload.php');
+lucid::init(__DIR__);
+include($app_dir.'/config/database.php');
 
 
 function get_columns($table_name)
@@ -79,14 +79,13 @@ foreach($tables as $table)
             $id_column = array_pop($id_column);
 
             echo("\t".$model_path.$table['name'].".php did not exist, generating\n");
-            $model_text  = "<"."?php\nclass lucid_model_".$table['name']." extends Model\n{\n";
+            $model_text  = "<"."?php\nclass lucid_model_".$table['name']." extends lucid_model\n{\n";
             $model_text .= "\tpublic static $"."_table = '".$table['name']."';\n";
             $model_text .= "\tpublic static $"."_id_column = '".$id_column."';\n";
             $model_text .= "}\n";
-            $model_text .= "?".">";
+            
             file_put_contents($model_path.$table['name'].'.php',$model_text);
         }
     }
 }
 
-?>

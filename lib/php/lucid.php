@@ -15,6 +15,7 @@ class lucid
         include(__DIR__.'/lucid_form.php');
         include(__DIR__.'/lucid_format.php');
         include(__DIR__.'/lucid_model.php');
+        include(__DIR__.'/lucid_logger.php');   # only used as a fallback logger, outputs to error_log
         include(__DIR__.'/lucid_security.php'); # need to load this even if the class is not used so that we have the interface definition
         include(__DIR__.'/lucid_session.php');  # need to load this even if the class is not used so that we have the interface definition
 

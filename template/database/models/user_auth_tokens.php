@@ -1,6 +1,6 @@
 <?php
 
-class lucid_model_user_auth_tokens extends Model
+class lucid_model_user_auth_tokens extends lucid_model
 {
     public static $_table = 'user_auth_tokens';
     public static $_id_column = 'token_id';

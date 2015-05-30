@@ -2,4 +2,5 @@
 dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 app="$dir/../"
 
-tail -f $app/debug.log | cut -c 73-10000
+
+php scripts/phinx --configuration=config/phinx.yml $1 $2 $3 $4 $5 $6 $7 $8 $9

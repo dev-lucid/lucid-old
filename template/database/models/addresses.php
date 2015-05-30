@@ -1,6 +1,6 @@
 <?php
 
-class lucid_model_addresses extends Model
+class lucid_model_addresses extends lucid_model
 {
     public static $_table = 'addresses';
     public static $_id_column = 'address_id';

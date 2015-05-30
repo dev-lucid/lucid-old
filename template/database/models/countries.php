@@ -1,6 +1,6 @@
 <?php
 
-class lucid_model_countries extends Model
+class lucid_model_countries extends lucid_model
 {
     public static $_table = 'countries';
     public static $_id_column = 'country_id';
