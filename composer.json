@@ -28,6 +28,7 @@
     "bin": [
         "bin/new-app",
         "bin/launch",
+        "bin/tail-log",
         "bin/rebuild_models.php"
     ]
 

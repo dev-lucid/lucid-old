@@ -5,7 +5,8 @@ template=$dir/../vendor/Dev-Lucid/Lucid/template
 
 echo "Making directories"
 mkdir $app/database;
-mkdir $app/database/patches;
+mkdir $app/database/migrations;
+mkdir $app/database/build;
 mkdir $app/database/models;
 mkdir $app/config;
 mkdir $app/cache;
@@ -22,10 +23,19 @@ mkdir $app/app/media/less/fonts;
 echo "Coping app files"
 cp $template/config/*.php $app/config/
 cp $template/app/*.php $app/app/
-cp $template/database/build* $app/database/
+cp $template/database/build/* $app/database/build/
 cp $template/database/models/* $app/database/models/
 cp $template/app/views/*.php $app/app/views/
 cp $template/app/controllers/*.php $app/app/controllers/
+
+
+cp $template/app/media/js/compile.php $app/app/media/js/;
+cp $template/app/media/js/customizations.js $app/app/media/js/;
+cp $template/app/media/less/compile.php $app/app/media/less/;
+cp $template/app/media/less/customizations.less $app/app/media/less/;
+
+echo "installing bootstrap fonts"
+cp $app/vendor/twbs/bootstrap/fonts/* $app/app/media/less/fonts/;
 
 echo "Installing libraries"
 cp $template/composer.json $app
@@ -35,11 +45,13 @@ composer install
 
 echo "Retrieving recommended jquery version (1.11.1)"
 curl "https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" > jquery.min.js
-mv jquery.min.js $app/app/media/js/;
+mv jquery.min.js $app/app/media/js/jquery.js;
 
 echo "Building basic database"
 cd $app/database/;
-sqlite3 development.sqlite ".read build.sqlite.sql"
+sqlite3 development.sqlite ".read build/sqlite.regions.sql"
+sqlite3 development.sqlite ".read build/sqlite.main.sql"
+sqlite3 development.sqlite ".read build/sqlite.views.sql"
 
 echo "-----------------------"
-echo "App complete. to run this app, bin/launch $1;"
+echo "App complete. to run this app, scripts/launch $1;"

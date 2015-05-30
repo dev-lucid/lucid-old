@@ -1,6 +1,6 @@
 <?php
 global $files;
-include(__DIR__.'/../../../etc/js.php');
+include(__DIR__.'/../../../config/js.php');
     
 header('Content-type: text/javascript; charset=UTF-8');
 header('Cache-Control: no-cache, must-revalidate'); 
@@ -26,8 +26,9 @@ foreach($files as $file)
 {
     include($file);
 }
-
-ob_flush();
+$src = ob_get_clean();
+file_put_contents(__DIR__.'/production.js',$src);
+echo($src);
 
 exit();
 ?>
