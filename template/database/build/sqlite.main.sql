@@ -113,3 +113,5 @@ insert into addresses (org_id,name,street_1,street_2,city,region_id,postal_code,
     (4, 'Downtown Branch','400 Denmark ave','Suite D','Duluth','US-MN','56666','US','(444) 444-4444','(444) 444-4444 ext 444'),
     (5, 'Eastern Office','500 Excelsior ave','Suite E','East Chicago','US-IL','61666','US','(555) 555-5555','(555) 555-5555 ext 555');
 
+
+CREATE TABLE `phinxlog` (`version` BIGINT NULL, `start_time` DATETIME NULL, `end_time` DATETIME NULL);
