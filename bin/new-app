@@ -22,6 +22,7 @@ mkdir $app/app/media/less/fonts;
 
 echo "Coping app files"
 cp $template/config/*.php $app/config/
+cp $template/config/*.yml $app/config/
 cp $template/app/*.php $app/app/
 cp $template/database/build/* $app/database/build/
 cp $template/database/models/* $app/database/models/
@@ -34,14 +35,16 @@ cp $template/app/media/js/customizations.js $app/app/media/js/;
 cp $template/app/media/less/compile.php $app/app/media/less/;
 cp $template/app/media/less/customizations.less $app/app/media/less/;
 
-echo "installing bootstrap fonts"
-cp $app/vendor/twbs/bootstrap/fonts/* $app/app/media/less/fonts/;
 
 echo "Installing libraries"
 cp $template/composer.json $app
 cd $app;
 rm composer.lock
 composer install
+
+echo "installing bootstrap fonts"
+cp $app/vendor/twbs/bootstrap/fonts/* $app/app/media/less/fonts/;
+
 
 echo "Retrieving recommended jquery version (1.11.1)"
 curl "https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" > jquery.min.js
