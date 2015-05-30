@@ -14,11 +14,6 @@ class lucid_controller
         return (isset($lucid->config['view_params'][$this->_params_index][$index]))?$lucid->config['view_params'][$this->_params_index][$index]:$default_value;
     }
 
-    public function send_return($value=null)
-    {
-        global $lucid;
-        $lucid->config['view_return'][$this->_return_index] = $value;
-    }
 
     function __call($method,$parameters)
     {

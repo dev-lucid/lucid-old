@@ -387,17 +387,14 @@ TEMPLATE;
         lucid::javascript('lucid.html.grid.grids[\''.$this->id.'\'].updateProperties('.json_encode($new_properties).');');
     }
 
-    public function handle_return($controller)
+    public function handle_return()
     {
         if(lucid::request('action') == $this->url)
         {
             $this->get_data();
             lucid::special($this->id,$this->build_data_return());
         }
-        else
-        {
-            $controller->send_return($this);
-        }
+        lucid::view_return($this);
     }
 }
 

@@ -1,18 +1,28 @@
 <?php
 
-class lucid_session implements ArrayAccess
+interface interface__lucid_session extends ArrayAccess
+{
+    public function session_id();
+    public function destroy($create_new);
+    public function __get($offset);
+    public function __set($offset,$value);
+    public function __isset($offset);
+    public function __unset($offset);
+}
+
+class lucid_session implements interface__lucid_session
 {
     function __construct()
     {
         session_start();
     }
 
-    function session_id()
+    public function session_id()
     {
         return session_id();
     }
 
-    function destroy($create_new = true)
+    public function destroy($create_new = true)
     {
         session_destroy();
         if ($create_new === true)
@@ -21,24 +31,24 @@ class lucid_session implements ArrayAccess
         }
     }
 
-    function __get($offset)
+    public function __get($offset)
     {
         return (isset($_SESSION[$offset]))?$_SESSION[$offset]:null;
     }
 
-    function __set($offset,$value)
+    public function __set($offset,$value)
     {
         $_SESSION[$offset] = $value;
     }
 
-    function __isset($name)
+    public function __isset($offset)
     {
-        return isset($_SESSION[$name]);
+        return isset($_SESSION[$offset]);
     }
 
-    function __unset($name)
+    public function __unset($offset)
     {
-        unset($_SESSION[$name]);
+        unset($_SESSION[$offset]);
     }
 
     public function offsetExists ( $offset )

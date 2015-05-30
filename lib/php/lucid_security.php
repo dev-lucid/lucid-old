@@ -1,6 +1,21 @@
 <?php
 
-class lucid_security
+interface interface__lucid_security
+{
+    public function set_defaults();
+    public function is_logged_in();
+    public function require_logged_in();
+    public function is_role($required_role);
+    public function require_role($required_role);
+    public function require_any_role();
+    public function has_permissions();
+    public function has_any_permission();
+    public function require_permissions();
+    public function require_any_permission();
+    public function generate_password($length);
+}
+
+class lucid_security implements interface__lucid_security
 {
     public $session_user_id_property  = 'user_id';
     public $default_user_id           = 0;
@@ -63,7 +78,7 @@ class lucid_security
         return true;
     }
     
-    public function require_any_role($required_role)
+    public function require_any_role()
     {
         $user_role      = lucid::session()->{$this->session_role_name_property};
         $required_roles = func_get_args();

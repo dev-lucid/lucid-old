@@ -14,6 +14,9 @@ class lucid
         include(__DIR__.'/lucid_rule.php');
         include(__DIR__.'/lucid_form.php');
         include(__DIR__.'/lucid_format.php');
+        include(__DIR__.'/lucid_model.php');
+        include(__DIR__.'/lucid_security.php'); # need to load this even if the class is not used so that we have the interface definition
+        include(__DIR__.'/lucid_session.php');  # need to load this even if the class is not used so that we have the interface definition
 
         $this->actions = [
             'pre-request'=>[],
@@ -25,7 +28,7 @@ class lucid
             'default_position'=>'body',
             'paths'=>[],
             'view_params' =>[],
-            'view_return'=>[],
+            'view_return'=>null,
             'language_tag' => 'en-US',
             'dictionaries'=>[__DIR__.'/../dicts/'],
             'dictionary_messages' => [],
@@ -36,6 +39,11 @@ class lucid
                 'includes'=> [],
                 'properties' => [],
             ],
+
+            'security'=>null,
+            'session'=>null,
+            'logger'=>null,
+
             'formats'=> [
                 'dates'=> [
                     // the key can be passed into lucid_format::date as the second parameter. The value will be passed to php's date function as the 1st parameter
@@ -108,7 +116,7 @@ class lucid
         global $lucid;
         $lucid = new lucid();
         $lucid->config['paths']['www'] = $www_dir.'/';
-        $lucid->config['paths']['app'] = $www_dir.'../';
+        $lucid->config['paths']['app'] = $www_dir.'/../';
         lucid::clear_response();
         ob_start();
     }
@@ -249,18 +257,21 @@ class lucid
     public static function process_action($controller, $method, $parameters=[])
     {
         global $lucid;
-        $view_file = $lucid->config['paths']['www'].'controllers/'.$controller.'/views/'.$method.'.php';
-        $controller = lucid::controller($controller);
 
-        # call the appropriate method of the controller
-        return $controller->$method($parameters);
+        # 'view' is a magic keyword that causes the request to load a view instead of a controller named 'view'.
+        if($controller === 'view'){
+            lucid::view($method);
+        }else{
+            $controller = lucid::controller($controller);
+            return $controller->$method($parameters);
+        }
     }
 
     public static function controller($controller)
     {
         global $lucid;
-        $controller_path  = $lucid->config['paths']['www'].'controllers/'.$controller;
-        $controller_file  = $lucid->config['paths']['www'].'controllers/'.$controller.'/'.$controller.'.php';
+        $controller_path  = $lucid->config['paths']['www'].'controllers/';
+        $controller_file  = $lucid->config['paths']['www'].'controllers/'.$controller.'.php';
         $controller_class = 'lucid_controller_'.$controller;
         
         if (!class_exists($controller_class))
@@ -296,17 +307,64 @@ class lucid
         return $controller;
     }
 
-    public static function log($string,$type='debug')
+    public static function view($view)
     {
         global $lucid;
-        if (isset($lucid->logger))
-        {
-            $lucid->logger->write($string,$type);
+        $whiteSpace = '\s';
+        $pattern    = '/[^a-zA-Z0-9-\_'. $whiteSpace . ']/u';
+        $file_name  = preg_replace($pattern, '', (string) $view) . '.php';
+        $full_path  = $lucid->config['paths']['www'].'views/'.$file_name;
+        if(!file_exists($full_path)){
+            throw new Exception('Could not locate file for view: '.$full_path);
         }
-        else
-        {
-            error_log($type.': '.$string);
+        include($full_path);
+        if (!is_null($lucid->config['view_return'])){
+            $return = $lucid->config['view_return'];
+            $lucid->config['view_return'] = null;
+            return $return;
         }
+    }
+
+    public static function model($name)
+    {
+        global $lucid;
+        $class_name = 'lucid_model_'.$name;
+        $file_path  = $lucid->config['paths']['app'].'/database/models/'.$name.'.php';
+        if(!class_exists($class_name))
+        {
+            if (file_exists($file_path))
+            {
+                include($file_path);
+            }
+        }
+        if(!class_exists($class_name))
+        {
+            throw new Exception('lucid/lib/php/lucid.php: Could not find model for '.$name.', looked for '.$file_path);
+        }
+        return Model::factory($name);
+    }
+
+    public static function view_return($value=null)
+    {
+        global $lucid;
+        $lucid->config['view_return'] = $value;
+    }
+
+    public static function logger()
+    {
+        global $lucid;
+        # use the default logger if one isn't configured
+        if (!isset($lucid->config['logger']))
+        {   
+            $lucid->config['logger'] = new lucid_logger();
+        }
+        return $lucid->config['logger'];
+    }
+
+    public static function log($string,$type='info')
+    {
+        global $lucid;
+        lucid::logger()->$type($string);
     }
 
     public static function log_request()
@@ -334,28 +392,42 @@ class lucid
     public static function session()
     {
         global $lucid;
-        return $lucid->session;
+        if (!isset($lucid->config['session']) or is_null($lucid->config['session']) or !is_object($lucid->config['session']))
+        {
+            throw new Exception('lucid session handler has not been set to an object. You should instantiate an object that implements interface__lucid_session and save it to $lucid->configp[\'session\'].');
+        }
+        if (!($lucid->config['session'] instanceof interface__lucid_session))
+        {
+            throw new Exception('lucid session handler is set, but the object does not implement interface__lucid_session.');
+        }
+        return $lucid->config['session'];
     }
  
     public static function security()
     {
         global $lucid;
-        return $lucid->security;
+        if (!isset($lucid->config['security']) or is_null($lucid->config['security']) or !is_object($lucid->config['security']))
+        {
+            throw new Exception('lucid security handler has not been set to an object. You should instantiate an object that implements interface__lucid_security and save it to $lucid->configp[\'security\']');
+        }
+        if (!($lucid->config['security'] instanceof interface__lucid_security))
+        {
+            throw new Exception('lucid security handler is set, but the object does not implement interface__lucid_security.');
+        }
+        return $lucid->config['security'];
     }
 
     public static function mailer()
     {
         global $lucid;
 
-        if (is_null($lucid->config['mailer']['class']))
-        {
+        if (is_null($lucid->config['mailer']['class'])){
             throw new Exeption('lucid/lib/php/lucid.php: tried to call mailer, but no class name for mailer was set. Try phpmailer?');
         }
 
         $class_name = $lucid->config['mailer']['class'];
 
-        if ($lucid->config['mailer']['included'] === false)
-        {
+        if ($lucid->config['mailer']['included'] === false){
             foreach($lucid->config['mailer']['includes'] as $include)
             {
                 include($include);
@@ -376,8 +448,7 @@ class lucid
        
     public static function request($field = null, $default_value = null)
     {
-        if(is_null($field))
-        {
+        if(is_null($field)){
             return $_REQUEST;
         }
         return (isset($_REQUEST[$field]))?$_REQUEST[$field]:$default_value;
@@ -398,7 +469,7 @@ class lucid
     public static function index_url($action,$parameters=[])
     {
         $url = (isset($_SERVER['HTTPS']))?'https://':'http://';
-        $url .= $_SERVER['HTTP_HOST'] . '/index.html';
+        $url .= $_SERVER['HTTP_HOST'] . '/index.php';
         $url .= '#!'.$action;
         foreach($parameters as $key=>$value)
         {
@@ -418,4 +489,14 @@ class lucid
     }
 }   
 
-?>
+# register an autoloader for the html functions 
+spl_autoload_register(function($name){
+    if (strpos($name,'lucid_html_') === 0){
+        $final_name = str_replace('lucid_html_','',$name);
+        $path = __DIR__.'/html/'.$final_name.'.php';
+        if(file_exists($path))
+        {
+            include($path);
+        }
+    }
+});
