@@ -1,3 +1,4 @@
+<?php include(__DIR__.'/../config/environment.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -12,10 +13,10 @@
     <title>Off Canvas Template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
-    <?php if ($_SERVER['REMOTE_ADDR'] === '127.0.0.1'){ ?>
-    <link href="media/less/compile.php" rel="stylesheet" />
-    <?php } else { ?>
+    <?php if (__STAGE__ == 'production'){ ?>
     <link href="media/less/production.css" rel="stylesheet" />
+    <?php } else { ?>
+    <link href="media/less/compile.php" rel="stylesheet" />
     <?php } ?>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -74,10 +75,10 @@
     </div><!--/.container-->
 
 
-    <?php if ($_SERVER['REMOTE_ADDR'] === '127.0.0.1'){ ?>
-    <script src="media/js/compile.php"></script>
-    <?php } else { ?>
+    <?php if (__STAGE__ == 'production'){ ?>
     <script src="media/js/production.js"></script>
+    <?php } else { ?>
+    <script src="media/js/compile.php"></script>
     <?php } ?>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script>
