@@ -2,4 +2,4 @@
 dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 app="$dir/../app"
 port=${1-8099}
-php -S 127.0.0.1:$port -t $app
+php -S 127.0.0.1:$port -t $app >> /dev/null & ./scripts/tail-log

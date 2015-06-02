@@ -216,8 +216,6 @@ TEMPLATE;
     public function get_data()
     {
         # look for parameters in the request
-        lucid::log_request();
-        
         $this->page_size      = lucid::request($this->id.'-page_size',     $this->page_size);
         $this->page_index     = lucid::request($this->id.'-page_index',    $this->page_index);
         $this->sort_column    = lucid::request($this->id.'-sort_column',   $this->sort_column);
