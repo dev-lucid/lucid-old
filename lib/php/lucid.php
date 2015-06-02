@@ -365,6 +365,10 @@ class lucid
     public static function log($string,$type='info')
     {
         global $lucid;
+        if(is_array($string) or is_object($string))
+        {
+            $string = str_replace("\n","\t",print_r($string,true));
+        }
         lucid::logger()->$type($string);
     }
 

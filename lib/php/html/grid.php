@@ -16,6 +16,16 @@ interface interface__lucid_html_grid_column
     public function render_cell($format='html',$data=array());
 }
 
+interface interface__lucid_html_grid_data_source
+{
+    public function order_by_asc($column);
+    public function order_by_desc($column);
+    public function limit($limit);
+    public function offset($offset);
+    public function count();
+    public function find_many();
+}
+
 class lucid_html_grid
 {
     # passed as parameters
@@ -87,16 +97,48 @@ TEMPLATE;
     public $thumbnail_template   = '<div class=""><img height="75" src="{{thumbnail_src}}" width="65"><span>{{thumbnail_label}}</span></div>';
 
 
-    public function __construct($title, $id, $url, $data_source, $parameters = [], $columns = [], $filters = [])
+    public function __construct($title, $id, $url, $data_source=null, $parameters = [], $columns = [], $filters = [])
     {
         $this->title       = $title;
         $this->id          = $id;
         $this->url         = $url;
         $this->data_source = $data_source;
         $this->parameters  = $parameters;
+
+        if(is_object($this->data_source) and (get_class($this->data_source) == 'ORMWrapper' or $this->data_source instanceof interface__lucid_html_grid_data_source))
+        {
+            # $this->data_source will work!
+        }
+        else
+        {
+            throw new Exception('lucid_html_grid was not passed a usable data source. The data source must either be an instance of ORMWrapper (created by the idiorm library), or implement interface__lucid_html_grid_data_source. This interface is based on the idiorm library, but you can in theory use whatever querying library you want if you write some kind of wrapper that passes along the calls/returns correctly. The definition for the interface is in '.__FILE__.', but you may want to look at http://idiorm.readthedocs.org/en/latest/ for further reference on how idiorm works.');
+        }
+
+        if(!is_array($this->parameters))
+        {
+            lucid::logger()->warning('lucid_html_grid was created, but the parameter 4 ($parameters) should\'ve been an array. was passed a '.gettype($parameters).' instead. It was automatically corrected.');
+            $this->parameters = [];
+        }
+        # this line is necessary in the event that $parameters is an empty array. We need to force
+        # the array to be string-indexed, not numerically indexed. Things will break if it stays a 
+        # numerically indexed array, which is the default.
+        $this->parameters['_force_hash'] = true;
+
+        # fix $columns if necessary
+        if (gettype($columns) !== 'array')
+        {
+            lucid::logger()->warning('lucid_html_grid was created, but the parameter 5 ($columns) should\'ve been an array. was passed a '.gettype($columns).' instead. It was automatically corrected.');
+            $columns = [];
+        }
         foreach($columns as $column)
         {
             $this->add_column($column);
+        }
+
+        if (gettype($filters) !== 'array')
+        {
+            lucid::logger()->warning('lucid_html_grid was created, but the parameter 6 ($filters) should\'ve been an array. was passed a '.gettype($filters).' instead. It was automatically corrected.');
+            $filters = [];
         }
         foreach($filters as $filter)
         {
@@ -397,5 +439,3 @@ TEMPLATE;
         lucid::view_return($this);
     }
 }
-
-?>
