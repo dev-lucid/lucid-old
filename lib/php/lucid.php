@@ -31,7 +31,7 @@ class lucid
             'view_params' =>[],
             'view_return'=>null,
             'language_tag' => 'en-US',
-            'dictionaries'=>[__DIR__.'/../dicts/'],
+            'dictionaries'=>[],
             'dictionary_messages' => [],
             'nav_state' => [],
             'mailer'=> [
