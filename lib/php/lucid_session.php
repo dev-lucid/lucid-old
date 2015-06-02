@@ -71,5 +71,3 @@ class lucid_session implements interface__lucid_session
         unset($_SESSION[$offset]);
     }
 }
-
-?>

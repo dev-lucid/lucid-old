@@ -8,5 +8,3 @@ class lucid_model extends Model
         return $this;
     }   
 }
-
-?>

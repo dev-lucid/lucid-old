@@ -173,5 +173,3 @@ class lucid_security implements interface__lucid_security
         return $password;
     }
 }
-
-?>

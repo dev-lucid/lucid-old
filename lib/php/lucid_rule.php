@@ -44,5 +44,3 @@ class lucid_rule implements interface__lucid_rule
         return $js;
     }
 }
-
-?>

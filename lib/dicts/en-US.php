@@ -55,6 +55,3 @@ lucid_i18n::add('field-addresses-phone_number_1','Phone Number 1');
 lucid_i18n::add('field-addresses-phone_number_2','Phone Number 2');
 
 lucid_i18n::add('field-organizations-name','Organization Name');
-
-
-?>

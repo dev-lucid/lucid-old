@@ -40,5 +40,3 @@ class lucid_controller
         return array_pop($lucid->config['view_return']);
     }
 }
-
-?>

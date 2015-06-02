@@ -23,5 +23,3 @@ class lucid_format
         return date($output_format,$input);
     }
 }
-
-?>

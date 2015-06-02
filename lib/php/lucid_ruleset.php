@@ -75,5 +75,3 @@ class lucid_ruleset
         lucid::javascript($this->render_javascript($form_name));
     }
 }
-
-?>

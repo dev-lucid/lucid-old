@@ -51,5 +51,3 @@ class lucid_i18n
         }
     }
 }
-
-?>
