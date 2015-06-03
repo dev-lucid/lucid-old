@@ -118,6 +118,7 @@ class lucid
         $lucid = new lucid();
         $lucid->config['paths']['www'] = $www_dir.'/';
         $lucid->config['paths']['app'] = $www_dir.'/../';
+        $lucid->config['paths']['url-dir'] = str_replace('app.php','',$_SERVER['PHP_SELF']);
         lucid::clear_response();
         ob_start();
     }
@@ -473,13 +474,16 @@ class lucid
 
     public static function index_url($action,$parameters=[])
     {
+        global $lucid;
         $url = (isset($_SERVER['HTTPS']))?'https://':'http://';
-        $url .= $_SERVER['HTTP_HOST'] . '/index.php';
+        $url .= $_SERVER['HTTP_HOST'] . $lucid->config['paths']['url-dir'].'index.php';
         $url .= '#!'.$action;
+
         foreach($parameters as $key=>$value)
         {
             $url .= '|'.urlencode($key).'|'.urlencode($value);
         }
+        lucid::log('final url: '.$url);
         return $url;
     }
 
