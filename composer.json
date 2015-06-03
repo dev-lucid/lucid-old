@@ -30,6 +30,7 @@
         "bin/dbpatch",
         "bin/launch",
         "bin/tail-log",
+        "bin/make_controller.php",
         "bin/rebuild_models.php"
     ]
 

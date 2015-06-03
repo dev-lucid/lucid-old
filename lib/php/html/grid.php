@@ -68,6 +68,7 @@ class lucid_html_grid
         'title'=>'',
         'filters-top'=>'',
         'filters-bottom'=>'',
+        'buttons'=>'',
         'table'=>'',
         'pager'=>'',
     ];
@@ -81,7 +82,7 @@ class lucid_html_grid
         {{table}}
     </div>
     <div class="panel-footer clearfix">
-        <div class="pull-left">{{filters-bottom}}</div>
+        <div class="pull-left">{{buttons}}{{filters-bottom}}</div>
         <div class="btn-group pull-right" role="group">{{pager}}</div>
     </div>
 </div>
@@ -427,13 +428,18 @@ TEMPLATE;
         lucid::javascript('lucid.html.grid.grids[\''.$this->id.'\'].updateProperties('.json_encode($new_properties).');');
     }
 
-    public function handle_return()
+    public function handle_return($force = false)
     {
-        if(lucid::request('action') == $this->url)
+        if(lucid::request('action') == $this->url or $force === true)
         {
             $this->get_data();
             lucid::special($this->id,$this->build_data_return());
         }
         lucid::view_return($this);
+    }
+
+    public function reload()
+    {
+        lucid::javascript('lucid.html.grid.grids[\''.$this->id.'\'].reloadData();');
     }
 }

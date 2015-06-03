@@ -35,7 +35,10 @@ class lucid_i18n
     {
         global $lucid;
 
-        lucid::log('preferred language is: '.$_SERVER['HTTP_ACCEPT_LANGUAGE']);
+        if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))
+        {
+            lucid::log('preferred language is: '.$_SERVER['HTTP_ACCEPT_LANGUAGE']);    
+        }
 
         foreach($lucid->config['dictionaries'] as $dict_path)
         {
