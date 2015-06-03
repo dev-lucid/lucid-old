@@ -9,11 +9,11 @@ $grid = new lucid_html_grid(
     [],
     [
         new lucid_html_grid_column(lucid::i18n('field-{table}-{edit_col}'),'{edit_col}',true,'75%',function($column,$format,$data){
-            return bs::anchor(['href'=>'#!view/edit_{table}|{id_col}|'.$data->{id_col},'text'=>$data->{edit_col}]);
+            return bs::anchor(['href'=>'#!view/{table}_edit|{id_col}|'.$data->{id_col},'text'=>$data->{edit_col}]);
         }),
         new lucid_html_grid_column('','',false,'25%',function($column,$format,$data){
             return bs::button_group_edit_delete([
-                'edit_url'=>'#!view/edit_{table}|{id_col}|'.$data->{id_col},
+                'edit_url'=>'#!view/{table}_edit|{id_col}|'.$data->{id_col},
                 'delete_url'=>'#!{table}/delete|{id_col}|'.$data->{id_col},
             ]);
         })
