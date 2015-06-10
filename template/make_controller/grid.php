@@ -21,7 +21,7 @@ $grid = new lucid_html_grid(
 );
 $grid->html_template_fields['buttons'] = bs::button([
     'modifier'=>'primary',
-    'label'=>bs::icon('plus').' Add New',
+    'label'=>bs::icon('plus').' '.lucid::i18n('action-create'),
     'href'=>'#!view/{table}_edit|{id_col}|0',
 ]);
 $grid->add_filter(new lucid_html_grid_filter_search(['{edit_col}']));

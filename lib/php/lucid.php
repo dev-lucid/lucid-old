@@ -400,11 +400,11 @@ class lucid
         global $lucid;
         if (!isset($lucid->config['session']) or is_null($lucid->config['session']) or !is_object($lucid->config['session']))
         {
-            throw new Exception('lucid session handler has not been set to an object. You should instantiate an object that implements interface__lucid_session and save it to $lucid->configp[\'session\'].');
+            throw new Exception('lucid session handler has not been set to an object. You should instantiate an object that implements interface__lucid_session (defined in '.__DIR__.'/lucid_session.php) and save it to $lucid->configp[\'session\'].');
         }
         if (!($lucid->config['session'] instanceof interface__lucid_session))
         {
-            throw new Exception('lucid session handler is set, but the object does not implement interface__lucid_session.');
+            throw new Exception('lucid session handler is set, but the object does not implement interface__lucid_session. This interface is defined in '.__DIR__.'/lucid_session.php');
         }
         return $lucid->config['session'];
     }
@@ -414,11 +414,11 @@ class lucid
         global $lucid;
         if (!isset($lucid->config['security']) or is_null($lucid->config['security']) or !is_object($lucid->config['security']))
         {
-            throw new Exception('lucid security handler has not been set to an object. You should instantiate an object that implements interface__lucid_security and save it to $lucid->configp[\'security\']');
+            throw new Exception('lucid security handler has not been set to an object. You should instantiate an object that implements interface__lucid_security (defined in '.__DIR__.'/lucid_security.php) and save it to $lucid->configp[\'security\']');
         }
         if (!($lucid->config['security'] instanceof interface__lucid_security))
         {
-            throw new Exception('lucid security handler is set, but the object does not implement interface__lucid_security.');
+            throw new Exception('lucid security handler is set, but the object does not implement interface__lucid_security. This interface is defined in '.__DIR__.'/lucid_security.php');
         }
         return $lucid->config['security'];
     }

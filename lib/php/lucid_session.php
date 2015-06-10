@@ -31,9 +31,13 @@ class lucid_session implements interface__lucid_session
         }
     }
 
-    public function __get($offset)
+    public function &__get($offset)
     {
-        return (isset($_SESSION[$offset]))?$_SESSION[$offset]:null;
+        if (!isset($_SESSION[$offset]))
+        {
+            $_SESSION[$offset] = null;
+        }
+        return $_SESSION[$offset];
     }
 
     public function __set($offset,$value)

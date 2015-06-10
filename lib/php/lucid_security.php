@@ -7,11 +7,11 @@ interface interface__lucid_security
     public function require_logged_in();
     public function is_role($required_role);
     public function require_role($required_role);
-    public function require_any_role();
-    public function has_permissions();
-    public function has_any_permission();
-    public function require_permissions();
-    public function require_any_permission();
+    public function require_any_role($required_roles);
+    public function has_permissions($required_permissions);
+    public function has_any_permission($required_permissions);
+    public function require_permissions($required_permissions);
+    public function require_any_permission($required_permissions);
     public function generate_password($length);
 }
 
@@ -46,16 +46,27 @@ class lucid_security implements interface__lucid_security
             lucid::session()->{$this->session_permission_property} = $this->default_permissions;
         }   
     }
+
+    public function get_role()
+    {
+        return lucid::session()->{$this->session_role_name_property};
+    }
+
+    public function get_permissions()
+    {
+        return lucid::session()->{$this->session_permission_property};
+    }
+
     
     public function is_logged_in()
     {
-        $user_role = lucid::session()->{$this->session_role_name_property};
+        $user_role = $this->get_role();
         return ($user_role !== $this->default_role_name);
     }
 
     public function require_logged_in()
     {
-        $user_role = lucid::session()->{$this->session_role_name_property};
+        $user_role = $this->get_role();
         if ($user_role === $this->default_role_name)
         {
             throw new Exception('lucid/lib/php/lucid_security: Unauthenticated user attempted to access functionality that required them to be logged in.');   
@@ -64,13 +75,13 @@ class lucid_security implements interface__lucid_security
     
     public function is_role($required_role)
     {
-        $user_role = lucid::session()->{$this->session_role_name_property};
+        $user_role = $this->get_role();
         return ($user_role === $required_role);
     }
     
     public function require_role($required_role)
     {
-        $user_role = lucid::session()->{$this->session_role_name_property};
+        $user_role = $this->get_role();
         if ($user_role !== $required_role)
         {
             throw new Exception('lucid/lib/php/lucid_security: User was not logged in as correct role. The user\'s role was '.((is_null($user_role))?'unknown':$user_role).', the required role was '.$required_role.'.');
@@ -78,11 +89,13 @@ class lucid_security implements interface__lucid_security
         return true;
     }
     
-    public function require_any_role()
+    public function require_any_role($required_roles)
     {
-        $user_role      = lucid::session()->{$this->session_role_name_property};
-        $required_roles = func_get_args();
-        
+        $user_role      = $this->get_role();
+        if (!is_array($required_roles))
+        {
+            $required_roles = [$required_roles];
+        }
         foreach($required_roles as $required_role)
         {
             if ($required_role === $user_role)
@@ -93,10 +106,13 @@ class lucid_security implements interface__lucid_security
         throw new Exception('lucid/lib/php/lucid_security: User was not logged in as any of the correct roles. The user\'s role was '.((is_null($user_role))?'unknown':$user_role).', the required role was '.$required_role.'.');
     }
 
-    public function has_permissions()
+    public function has_permissions($required_permissions)
     {
-        $user_permissions     = lucid::session()->{$this->session_permission_property};
-        $required_permissions = func_get_args();
+        $user_permissions     = $this->get_permissions();
+        if (!is_array($required_permissions))
+        {
+            $required_permissions = [$required_permissions];
+        }
         $match_count = 0;
         
         foreach($required_permissions as $required_permission)
@@ -110,11 +126,13 @@ class lucid_security implements interface__lucid_security
         return ($match_count  == count($required_permission));
     }
     
-    public function has_any_permission()
+    public function has_any_permission($required_permissions)
     {
-        $user_permissions     = lucid::session()->{$this->session_permission_property};
-        $required_permissions = func_get_args();
-        
+        $user_permissions     = $this->get_permissions();
+        if (!is_array($required_permissions))
+        {
+            $required_permissions = [$required_permissions];
+        }
         foreach($required_permissions as $required_permission)
         {
             if (in_array($required_permission, $user_permissions))
@@ -125,11 +143,13 @@ class lucid_security implements interface__lucid_security
         return false;
     }
     
-    public function require_permissions()
+    public function require_permissions($required_permissions)
     {
-        $user_permissions     = lucid::session()->{$this->session_permission_property};
-        $required_permissions = func_get_args();
-        
+        $user_permissions     = $this->get_permissions();
+        if (!is_array($required_permissions))
+        {
+            $required_permissions = [$required_permissions];
+        }
         foreach($required_permissions as $required_permission)
         {
             if (!in_array($required_permission, $user_permissions))
@@ -137,12 +157,16 @@ class lucid_security implements interface__lucid_security
                 throw new Exception('lucid/lib/php/lucid_security: User did not have all of the necessary permissions to perform an action. The user\'s permissions were: '.str_replace("\n","\t",print_r($user_permissions,true)).', the required permissions were: '.str_replace("\n","\t",print_r($required_permissions,true)) );
             }
         }
+        return true;
     }
     
-    public function require_any_permission()
+    public function require_any_permission($required_permissions)
     {
-        $user_permissions     = lucid::session()->{$this->session_permission_property};
-        $required_permissions = func_get_args();
+        $user_permissions     = $this->get_permissions();
+        if (!is_array($required_permissions))
+        {
+            $required_permissions = [$required_permissions];
+        }
         $match_count = 0;
         
         
