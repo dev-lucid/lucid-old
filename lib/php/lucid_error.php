@@ -4,8 +4,9 @@ class lucid_error
 {
     public static function handle_error($error_level, $error_message, $error_file, $error_line, $error_context)
     {
-        lucid::log($error_file.'['.$error_line.']: '.$error_message.' in '.$error_context,'error');
-        lucid::deinit();
+        print_r(func_get_args());
+        #lucid::log($error_file.'['.$error_line.']: '.$error_message.' in '.$error_context,'error');
+        #lucid::deinit();
     }
 
     public static function FriendlyErrorType($type) 
